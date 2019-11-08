@@ -31,7 +31,7 @@ void yyerror (char* s) {
 %token <val> AND OR NOT DIFF EQUAL SUP INF
 %token PLUS MOINS STAR DIV
 %token DOT ARR
-
+%type <val> decl var_decl type typename aff exp
 %left DIFF EQUAL SUP INF       // low priority on comparison
 %left PLUS MOINS               // higher priority on + - 
 %left STAR DIV                 // higher priority on * /
@@ -59,13 +59,13 @@ decl_list : decl decl_list     {}
 |                              {}
 ;
 
-decl: var_decl PV              {}
+decl: var_decl PV              {$$->name = $1->name;}
 | struct_decl PV               {}
 | fun_decl                     {}
 ;
 
 // I.1. Variables
-var_decl : type vlist          {}
+var_decl : type vlist          {$$->type_val = $1->type_val;}
 ;
 
 // I.2. Structures
@@ -106,12 +106,12 @@ fun_body : AO block AF         {}
 // I.4. Types
 type
 : typename pointer             {}
-| typename                     {}
+| typename                     {$$->type_val = $1->type_val; }
 ;
 
 typename
-: TINT                          {}
-| TFLOAT                        {}
+: TINT                          {$$->type_val = INT; }
+| TFLOAT                        {$$->type_val = FLOAT; }
 | VOID                          {}
 | STRUCT ID                     {}
 ;
@@ -141,7 +141,7 @@ exp                           {}
 
 // II.1 Affectations
 
-aff : ID EQ exp               {}
+aff : ID EQ exp               {$$->name = $1->name; $$->int_val = $3->int_val; set_symbol_value($1->name, $3);}
 | exp STAR EQ exp
 ;
 
@@ -185,11 +185,11 @@ exp
 | exp PLUS exp                {}
 | exp MOINS exp               {}
 | exp STAR exp                {}
-| exp DIV exp                 {}
+| exp DIV exp                  {}
 | PO exp PF                   {}
-| ID                          {}
+| ID                          {$$ = get_symbol_value($1->name);}
 | NUMI                        {}
-| NUMF                        {}
+| NUMF                        {$$ = $1;}
 
 // II.3.1 Déréférencement
 
