@@ -6,6 +6,7 @@
 %{
 
 #include <stdio.h>
+#include <stdlib.h>
   
 extern int yylex();
 extern int yyparse();
@@ -15,14 +16,19 @@ void yyerror (char* s) {
   
 }
 
+
 int reg_nb = 0;
 int get_register_nb() {
   return(reg_nb++);
 }
 
-void init(char* filename) {
-  FILE* output;
-  output = fopen(filename,w);
+FILE* init(char* filename) {
+  return fopen(filename, "w+");
+}
+
+void typename_print(int t){
+  if (t == 0) printf("int") ;
+  if (t == 1) printf("float") ;
 }
 %}
 
@@ -39,7 +45,7 @@ void init(char* filename) {
 %token <val> AND OR NOT DIFF EQUAL SUP INF
 %token PLUS MOINS STAR DIV
 %token DOT ARR
-%type <val> decl var_decl type typename aff exp
+%type <val> decl var_decl type typename aff exp vlist did vir
 %left DIFF EQUAL SUP INF       // low priority on comparison
 %left PLUS MOINS               // higher priority on + - 
 %left STAR DIV                 // higher priority on * /
@@ -54,7 +60,7 @@ void init(char* filename) {
 
 %%
 
-prog : block                   {}
+prog : block                   {printf("DEBUT\n");}
 ;
 
 block:
@@ -67,13 +73,13 @@ decl_list : decl decl_list     {}
 |                              {}
 ;
 
-decl: var_decl PV              {$$->name = $1->name;}
+decl: var_decl PV              {}
 | struct_decl PV               {}
 | fun_decl                     {}
 ;
 
 // I.1. Variables
-var_decl : type vlist          {$$->type_val = $1->type_val;}
+var_decl : type vlist          {$$->type_val = $1->type_val; printf("type vlist\n");}
 ;
 
 // I.2. Structures
@@ -101,13 +107,21 @@ fun_head : ID PO PF            {}
 params: type ID vir params     {}
 | type ID                      {}
 
-vlist: ID vir vlist            {}
-| ID                           {set_symbol_value(string_to_sid($1->name),get_register_nb());//ajouter une condition pour les redÈfinitions, en gros cette ligne dÈfinis ID comme une variable ‡ retenir et lui associe un numÈro (unique) de registre
-                                $$->val = $1->val;}//Áa j'suis pas s˚r mais on sait jamais
+vlist: did vir vlist            {}
+| did                           {}
   
 ;
 
-vir : VIR                      {}
+did : ID                       {$$ = new_attribute(); 
+                                $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_register_nb();
+                                set_symbol_value(string_to_sid($1->name), $$);
+                                printf("ID\n");
+                                FILE * output_h = init("MyC/test.h"); 
+                                fprintf(output_h, "%s", $$->name);
+                                }
+;
+
+vir : VIR                      {$$->type_val = $<val>-1->type_val;  printf("VIR\n");}
 ;
 
 fun_body : AO block AF         {}
@@ -116,11 +130,12 @@ fun_body : AO block AF         {}
 // I.4. Types
 type
 : typename pointer             {}
-| typename                     {$$->type_val = $1->type_val; }
+| typename                     {$$->type_val = $1->type_val; printf("typename\n");}
 ;
 
 typename
-: TINT                          {$$->type_val = INT; }
+: TINT                          {$$ = new_attribute(); $$->type_val = INT; printf("TINT\n");
+                                typename_print($$->type_val); printf("\n");}
 | TFLOAT                        {$$->type_val = FLOAT; }
 | VOID                          {}
 | STRUCT ID                     {}
@@ -136,11 +151,11 @@ pointer
 
 inst_list: inst PV inst_list   {}
 | inst                         {}
+|                              {}
 ;
 
 inst:
-exp                           {}
-| AO block AF                 {}
+AO block AF                 {}
 | aff                         {}
 | ret                         {}
 | cond                        {}
@@ -151,7 +166,7 @@ exp                           {}
 
 // II.1 Affectations
 
-aff : ID EQ exp               {$$->name = $1->name; $$->int_val = $3->int_val; set_symbol_value($1->name, $3);}
+aff : ID EQ exp               {$$->name = $1->name; $$->int_val = $3->int_val; set_symbol_value($1->name, $3); printf("Affectation\n");}
 | exp STAR EQ exp
 ;
 
@@ -193,13 +208,13 @@ exp
 // II.3.0 Exp. arithmetiques
 : MOINS exp %prec UNA         {}
 //on va supposer que le fichier marche
-| exp PLUS exp                {fprintf(output, "r%d=%s+%s",get_register_nb(),$1->val,$3->val); }
-| exp MOINS exp               {fprintf(output, "r%d=%s-%s", get_register_nb(),$1->val, $3->val);}
-| exp STAR exp                {fprintf(output, "r%d=%s*%s", get_register_nb(),$1->val, $3->val);}
-| exp DIV exp                  {fprintf(output, "r%d=%s/%s", get_register_nb(),$1->val, $3->val);}
+| exp PLUS exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%s+%s",get_register_nb(),$1->int_val,$3->int_val); close(output);}
+| exp MOINS exp               {FILE * output = init("test.c"); fprintf(output, "r%d=%s-%s", get_register_nb(),$1->int_val, $3->int_val);close(output);}
+| exp STAR exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%s*%s", get_register_nb(),$1->int_val, $3->int_val);close(output);}
+| exp DIV exp                 {FILE * output = init("test.c"); fprintf(output, "r%d=%s/%s", get_register_nb(),$1->int_val, $3->int_val);close(output);}
 | PO exp PF                   {}
-| ID                          {$$ = get_symbol_value($1->name);}
-| NUMI                        {}
+| ID                          {$$ = get_symbol_value($1->name); printf("ID de exp\n");}
+| NUMI                        {$$ = $1; printf("NUMI\n"); }
 | NUMF                        {$$ = $1;}
 
 // II.3.1 D√©r√©f√©rencement

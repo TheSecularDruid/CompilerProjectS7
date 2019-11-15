@@ -1,0 +1,16 @@
+Verifier qu'une variable a été déclarée: vérifier qu'elle est dans la table des 
+symboles
+x + y: vérifier que x et y sont du meme type
+
+Une fois qu'on a le type et le registre on doit produire le code
+
+Il faut aller chercher le type dans $- quelqeu chose
+
+Quand on est en train de lire un ID, comment reussir à lire son type??
+Une solution: var_decl = type vlist {}
+parcourir la liste et tous les type sont dans type
+
+vlist: .. (voir photo)
+
+avoir uen variable globale type_courant et la mettre à jour à chaque fois que l'on rencontre
+un type
