@@ -9,13 +9,21 @@
   
 extern int yylex();
 extern int yyparse();
-
+ 
 void yyerror (char* s) {
   printf ("%s\n",s);
   
 }
-		
 
+int reg_nb = 0;
+int get_register_nb() {
+  return(reg_nb++);
+}
+
+void init(char* filename) {
+  FILE* output;
+  output = fopen(filename,w);
+}
 %}
 
 %union { 
@@ -94,7 +102,9 @@ params: type ID vir params     {}
 | type ID                      {}
 
 vlist: ID vir vlist            {}
-| ID                           {}
+| ID                           {set_symbol_value(string_to_sid($1->name),get_register_nb());//ajouter une condition pour les redéfinitions, en gros cette ligne définis ID comme une variable à retenir et lui associe un numéro (unique) de registre
+                                $$->val = $1->val;}//ça j'suis pas sûr mais on sait jamais
+  
 ;
 
 vir : VIR                      {}
@@ -182,10 +192,11 @@ while : WHILE                 {}
 exp
 // II.3.0 Exp. arithmetiques
 : MOINS exp %prec UNA         {}
-| exp PLUS exp                {}
-| exp MOINS exp               {}
-| exp STAR exp                {}
-| exp DIV exp                  {}
+//on va supposer que le fichier marche
+| exp PLUS exp                {fprintf(output, "r%d=%s+%s",get_register_nb(),$1->val,$3->val); }
+| exp MOINS exp               {fprintf(output, "r%d=%s-%s", get_register_nb(),$1->val, $3->val);}
+| exp STAR exp                {fprintf(output, "r%d=%s*%s", get_register_nb(),$1->val, $3->val);}
+| exp DIV exp                  {fprintf(output, "r%d=%s/%s", get_register_nb(),$1->val, $3->val);}
 | PO exp PF                   {}
 | ID                          {$$ = get_symbol_value($1->name);}
 | NUMI                        {}

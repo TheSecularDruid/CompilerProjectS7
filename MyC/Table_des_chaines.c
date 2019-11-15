@@ -14,7 +14,7 @@
 
 char * string_copy(char *s) {
 	if (!s) return NULL;
-	char * sc = malloc(strlen(s)*sizeof(char));
+	char * sc = malloc((strlen(s)+1)*sizeof(char));
 	return strcpy(sc, s);
 }
 
