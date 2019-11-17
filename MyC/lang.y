@@ -26,9 +26,9 @@ FILE* init(char* filename) {
   return fopen(filename, "w+");
 }
 
-void typename_print(int t){
-  if (t == 0) printf("int") ;
-  if (t == 1) printf("float") ;
+char * enumPrint(int t){
+  if (t == 0) return "int" ;
+  if (t == 1) return "float" ;
 }
 %}
 
@@ -116,8 +116,9 @@ did : ID                       {$$ = new_attribute();
                                 $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_register_nb();
                                 set_symbol_value(string_to_sid($1->name), $$);
                                 printf("ID\n");
-                                FILE * output_h = init("MyC/test.h"); 
-                                fprintf(output_h, "%s", $$->name);
+                                FILE * output_h = init("test.h"); 
+                                fprintf(output_h, "%s %s;", enumPrint($$->type_val), $$->name);
+                                fclose(output_h);
                                 }
 ;
 
@@ -135,7 +136,7 @@ type
 
 typename
 : TINT                          {$$ = new_attribute(); $$->type_val = INT; printf("TINT\n");
-                                typename_print($$->type_val); printf("\n");}
+                                }
 | TFLOAT                        {$$->type_val = FLOAT; }
 | VOID                          {}
 | STRUCT ID                     {}
@@ -208,10 +209,10 @@ exp
 // II.3.0 Exp. arithmetiques
 : MOINS exp %prec UNA         {}
 //on va supposer que le fichier marche
-| exp PLUS exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%s+%s",get_register_nb(),$1->int_val,$3->int_val); close(output);}
-| exp MOINS exp               {FILE * output = init("test.c"); fprintf(output, "r%d=%s-%s", get_register_nb(),$1->int_val, $3->int_val);close(output);}
-| exp STAR exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%s*%s", get_register_nb(),$1->int_val, $3->int_val);close(output);}
-| exp DIV exp                 {FILE * output = init("test.c"); fprintf(output, "r%d=%s/%s", get_register_nb(),$1->int_val, $3->int_val);close(output);}
+| exp PLUS exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d",get_register_nb(),$1->int_val,$3->int_val); fclose(output);}
+| exp MOINS exp               {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
+| exp STAR exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
+| exp DIV exp                 {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
 | PO exp PF                   {}
 | ID                          {$$ = get_symbol_value($1->name); printf("ID de exp\n");}
 | NUMI                        {$$ = $1; printf("NUMI\n"); }

@@ -86,9 +86,9 @@ FILE* init(char* filename) {
   return fopen(filename, "w+");
 }
 
-void typename_print(int t){
-  if (t == 0) printf("int") ;
-  if (t == 1) printf("float") ;
+char * enumPrint(int t){
+  if (t == 0) return "int" ;
+  if (t == 1) return "float" ;
 }
 
 #line 95 "y.tab.c" /* yacc.c:339  */
@@ -530,12 +530,12 @@ static const yytype_uint8 yyrline[] =
 {
        0,    63,    63,    67,    72,    73,    76,    77,    78,    82,
       86,    89,    92,    93,    97,   100,   103,   104,   107,   108,
-     110,   111,   115,   124,   127,   132,   133,   137,   139,   140,
-     141,   145,   146,   152,   153,   154,   158,   159,   160,   161,
-     162,   163,   169,   170,   175,   176,   181,   182,   186,   189,
-     192,   197,   200,   202,   209,   211,   212,   213,   214,   215,
-     216,   217,   218,   222,   226,   227,   228,   229,   230,   231,
-     232,   236,   237,   239,   244,   246,   247,   250,   251
+     110,   111,   115,   125,   128,   133,   134,   138,   140,   141,
+     142,   146,   147,   153,   154,   155,   159,   160,   161,   162,
+     163,   164,   170,   171,   176,   177,   182,   183,   187,   190,
+     193,   198,   201,   203,   210,   212,   213,   214,   215,   216,
+     217,   218,   219,   223,   227,   228,   229,   230,   231,   232,
+     233,   237,   238,   240,   245,   247,   248,   251,   252
 };
 #endif
 
@@ -1543,339 +1543,340 @@ yyreduce:
                                 (yyval.val)->name = (yyvsp[0].val)->name; (yyval.val)->type_val = (yyvsp[-1].val)->type_val; (yyval.val)->reg_number = get_register_nb();
                                 set_symbol_value(string_to_sid((yyvsp[0].val)->name), (yyval.val));
                                 printf("ID\n");
-                                FILE * output_h = init("MyC/test.h"); 
-                                fprintf(output_h, "%s", (yyval.val)->name);
+                                FILE * output_h = init("test.h"); 
+                                fprintf(output_h, "%s %s;", enumPrint((yyval.val)->type_val), (yyval.val)->name);
+                                fclose(output_h);
                                 }
-#line 1550 "y.tab.c" /* yacc.c:1646  */
+#line 1551 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 124 "lang.y" /* yacc.c:1646  */
+#line 125 "lang.y" /* yacc.c:1646  */
     {(yyval.val)->type_val = (yyvsp[(-1) - (1)].val)->type_val;  printf("VIR\n");}
-#line 1556 "y.tab.c" /* yacc.c:1646  */
+#line 1557 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 127 "lang.y" /* yacc.c:1646  */
+#line 128 "lang.y" /* yacc.c:1646  */
     {}
-#line 1562 "y.tab.c" /* yacc.c:1646  */
+#line 1563 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 132 "lang.y" /* yacc.c:1646  */
+#line 133 "lang.y" /* yacc.c:1646  */
     {}
-#line 1568 "y.tab.c" /* yacc.c:1646  */
+#line 1569 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 133 "lang.y" /* yacc.c:1646  */
+#line 134 "lang.y" /* yacc.c:1646  */
     {(yyval.val)->type_val = (yyvsp[0].val)->type_val; printf("typename\n");}
-#line 1574 "y.tab.c" /* yacc.c:1646  */
+#line 1575 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 137 "lang.y" /* yacc.c:1646  */
+#line 138 "lang.y" /* yacc.c:1646  */
     {(yyval.val) = new_attribute(); (yyval.val)->type_val = INT; printf("TINT\n");
-                                typename_print((yyval.val)->type_val); printf("\n");}
-#line 1581 "y.tab.c" /* yacc.c:1646  */
+                                }
+#line 1582 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 139 "lang.y" /* yacc.c:1646  */
+#line 140 "lang.y" /* yacc.c:1646  */
     {(yyval.val)->type_val = FLOAT; }
-#line 1587 "y.tab.c" /* yacc.c:1646  */
+#line 1588 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 140 "lang.y" /* yacc.c:1646  */
+#line 141 "lang.y" /* yacc.c:1646  */
     {}
-#line 1593 "y.tab.c" /* yacc.c:1646  */
+#line 1594 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 141 "lang.y" /* yacc.c:1646  */
+#line 142 "lang.y" /* yacc.c:1646  */
     {}
-#line 1599 "y.tab.c" /* yacc.c:1646  */
+#line 1600 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 145 "lang.y" /* yacc.c:1646  */
+#line 146 "lang.y" /* yacc.c:1646  */
     {}
-#line 1605 "y.tab.c" /* yacc.c:1646  */
+#line 1606 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 146 "lang.y" /* yacc.c:1646  */
+#line 147 "lang.y" /* yacc.c:1646  */
     {}
-#line 1611 "y.tab.c" /* yacc.c:1646  */
+#line 1612 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 152 "lang.y" /* yacc.c:1646  */
+#line 153 "lang.y" /* yacc.c:1646  */
     {}
-#line 1617 "y.tab.c" /* yacc.c:1646  */
+#line 1618 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 153 "lang.y" /* yacc.c:1646  */
+#line 154 "lang.y" /* yacc.c:1646  */
     {}
-#line 1623 "y.tab.c" /* yacc.c:1646  */
+#line 1624 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 154 "lang.y" /* yacc.c:1646  */
+#line 155 "lang.y" /* yacc.c:1646  */
     {}
-#line 1629 "y.tab.c" /* yacc.c:1646  */
+#line 1630 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 158 "lang.y" /* yacc.c:1646  */
+#line 159 "lang.y" /* yacc.c:1646  */
     {}
-#line 1635 "y.tab.c" /* yacc.c:1646  */
+#line 1636 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 159 "lang.y" /* yacc.c:1646  */
+#line 160 "lang.y" /* yacc.c:1646  */
     {}
-#line 1641 "y.tab.c" /* yacc.c:1646  */
+#line 1642 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 160 "lang.y" /* yacc.c:1646  */
+#line 161 "lang.y" /* yacc.c:1646  */
     {}
-#line 1647 "y.tab.c" /* yacc.c:1646  */
+#line 1648 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 161 "lang.y" /* yacc.c:1646  */
+#line 162 "lang.y" /* yacc.c:1646  */
     {}
-#line 1653 "y.tab.c" /* yacc.c:1646  */
+#line 1654 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 162 "lang.y" /* yacc.c:1646  */
+#line 163 "lang.y" /* yacc.c:1646  */
     {}
-#line 1659 "y.tab.c" /* yacc.c:1646  */
+#line 1660 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 163 "lang.y" /* yacc.c:1646  */
+#line 164 "lang.y" /* yacc.c:1646  */
     {}
-#line 1665 "y.tab.c" /* yacc.c:1646  */
+#line 1666 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 169 "lang.y" /* yacc.c:1646  */
+#line 170 "lang.y" /* yacc.c:1646  */
     {(yyval.val)->name = (yyvsp[-2].val)->name; (yyval.val)->int_val = (yyvsp[0].val)->int_val; set_symbol_value((yyvsp[-2].val)->name, (yyvsp[0].val)); printf("Affectation\n");}
-#line 1671 "y.tab.c" /* yacc.c:1646  */
+#line 1672 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 175 "lang.y" /* yacc.c:1646  */
+#line 176 "lang.y" /* yacc.c:1646  */
     {}
-#line 1677 "y.tab.c" /* yacc.c:1646  */
+#line 1678 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 176 "lang.y" /* yacc.c:1646  */
+#line 177 "lang.y" /* yacc.c:1646  */
     {}
-#line 1683 "y.tab.c" /* yacc.c:1646  */
+#line 1684 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 181 "lang.y" /* yacc.c:1646  */
+#line 182 "lang.y" /* yacc.c:1646  */
     {}
-#line 1689 "y.tab.c" /* yacc.c:1646  */
+#line 1690 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 182 "lang.y" /* yacc.c:1646  */
+#line 183 "lang.y" /* yacc.c:1646  */
     {}
-#line 1695 "y.tab.c" /* yacc.c:1646  */
+#line 1696 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 186 "lang.y" /* yacc.c:1646  */
+#line 187 "lang.y" /* yacc.c:1646  */
     {}
-#line 1701 "y.tab.c" /* yacc.c:1646  */
+#line 1702 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 189 "lang.y" /* yacc.c:1646  */
+#line 190 "lang.y" /* yacc.c:1646  */
     {}
-#line 1707 "y.tab.c" /* yacc.c:1646  */
+#line 1708 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 192 "lang.y" /* yacc.c:1646  */
+#line 193 "lang.y" /* yacc.c:1646  */
     {}
-#line 1713 "y.tab.c" /* yacc.c:1646  */
+#line 1714 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 197 "lang.y" /* yacc.c:1646  */
+#line 198 "lang.y" /* yacc.c:1646  */
     {}
-#line 1719 "y.tab.c" /* yacc.c:1646  */
+#line 1720 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 200 "lang.y" /* yacc.c:1646  */
+#line 201 "lang.y" /* yacc.c:1646  */
     {}
-#line 1725 "y.tab.c" /* yacc.c:1646  */
+#line 1726 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 202 "lang.y" /* yacc.c:1646  */
+#line 203 "lang.y" /* yacc.c:1646  */
     {}
-#line 1731 "y.tab.c" /* yacc.c:1646  */
+#line 1732 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 209 "lang.y" /* yacc.c:1646  */
+#line 210 "lang.y" /* yacc.c:1646  */
     {}
-#line 1737 "y.tab.c" /* yacc.c:1646  */
+#line 1738 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 211 "lang.y" /* yacc.c:1646  */
-    {FILE * output = init("test.c"); fprintf(output, "r%d=%s+%s",get_register_nb(),(yyvsp[-2].val)->int_val,(yyvsp[0].val)->int_val); close(output);}
-#line 1743 "y.tab.c" /* yacc.c:1646  */
+#line 212 "lang.y" /* yacc.c:1646  */
+    {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d",get_register_nb(),(yyvsp[-2].val)->int_val,(yyvsp[0].val)->int_val); fclose(output);}
+#line 1744 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 212 "lang.y" /* yacc.c:1646  */
-    {FILE * output = init("test.c"); fprintf(output, "r%d=%s-%s", get_register_nb(),(yyvsp[-2].val)->int_val, (yyvsp[0].val)->int_val);close(output);}
-#line 1749 "y.tab.c" /* yacc.c:1646  */
+#line 213 "lang.y" /* yacc.c:1646  */
+    {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),(yyvsp[-2].val)->int_val, (yyvsp[0].val)->int_val);fclose(output);}
+#line 1750 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 213 "lang.y" /* yacc.c:1646  */
-    {FILE * output = init("test.c"); fprintf(output, "r%d=%s*%s", get_register_nb(),(yyvsp[-2].val)->int_val, (yyvsp[0].val)->int_val);close(output);}
-#line 1755 "y.tab.c" /* yacc.c:1646  */
+#line 214 "lang.y" /* yacc.c:1646  */
+    {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),(yyvsp[-2].val)->int_val, (yyvsp[0].val)->int_val);fclose(output);}
+#line 1756 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 214 "lang.y" /* yacc.c:1646  */
-    {FILE * output = init("test.c"); fprintf(output, "r%d=%s/%s", get_register_nb(),(yyvsp[-2].val)->int_val, (yyvsp[0].val)->int_val);close(output);}
-#line 1761 "y.tab.c" /* yacc.c:1646  */
+#line 215 "lang.y" /* yacc.c:1646  */
+    {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),(yyvsp[-2].val)->int_val, (yyvsp[0].val)->int_val);fclose(output);}
+#line 1762 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 215 "lang.y" /* yacc.c:1646  */
+#line 216 "lang.y" /* yacc.c:1646  */
     {}
-#line 1767 "y.tab.c" /* yacc.c:1646  */
+#line 1768 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 216 "lang.y" /* yacc.c:1646  */
+#line 217 "lang.y" /* yacc.c:1646  */
     {(yyval.val) = get_symbol_value((yyvsp[0].val)->name); printf("ID de exp\n");}
-#line 1773 "y.tab.c" /* yacc.c:1646  */
+#line 1774 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 217 "lang.y" /* yacc.c:1646  */
+#line 218 "lang.y" /* yacc.c:1646  */
     {(yyval.val) = (yyvsp[0].val); printf("NUMI\n"); }
-#line 1779 "y.tab.c" /* yacc.c:1646  */
+#line 1780 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 218 "lang.y" /* yacc.c:1646  */
+#line 219 "lang.y" /* yacc.c:1646  */
     {(yyval.val) = (yyvsp[0].val);}
-#line 1785 "y.tab.c" /* yacc.c:1646  */
+#line 1786 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 222 "lang.y" /* yacc.c:1646  */
+#line 223 "lang.y" /* yacc.c:1646  */
     {}
-#line 1791 "y.tab.c" /* yacc.c:1646  */
+#line 1792 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 226 "lang.y" /* yacc.c:1646  */
+#line 227 "lang.y" /* yacc.c:1646  */
     {}
-#line 1797 "y.tab.c" /* yacc.c:1646  */
+#line 1798 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 227 "lang.y" /* yacc.c:1646  */
+#line 228 "lang.y" /* yacc.c:1646  */
     {}
-#line 1803 "y.tab.c" /* yacc.c:1646  */
+#line 1804 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 228 "lang.y" /* yacc.c:1646  */
+#line 229 "lang.y" /* yacc.c:1646  */
     {}
-#line 1809 "y.tab.c" /* yacc.c:1646  */
+#line 1810 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 229 "lang.y" /* yacc.c:1646  */
+#line 230 "lang.y" /* yacc.c:1646  */
     {}
-#line 1815 "y.tab.c" /* yacc.c:1646  */
+#line 1816 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 230 "lang.y" /* yacc.c:1646  */
+#line 231 "lang.y" /* yacc.c:1646  */
     {}
-#line 1821 "y.tab.c" /* yacc.c:1646  */
+#line 1822 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 231 "lang.y" /* yacc.c:1646  */
+#line 232 "lang.y" /* yacc.c:1646  */
     {}
-#line 1827 "y.tab.c" /* yacc.c:1646  */
+#line 1828 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 232 "lang.y" /* yacc.c:1646  */
+#line 233 "lang.y" /* yacc.c:1646  */
     {}
-#line 1833 "y.tab.c" /* yacc.c:1646  */
+#line 1834 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 236 "lang.y" /* yacc.c:1646  */
+#line 237 "lang.y" /* yacc.c:1646  */
     {}
-#line 1839 "y.tab.c" /* yacc.c:1646  */
+#line 1840 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 237 "lang.y" /* yacc.c:1646  */
+#line 238 "lang.y" /* yacc.c:1646  */
     {}
-#line 1845 "y.tab.c" /* yacc.c:1646  */
+#line 1846 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 239 "lang.y" /* yacc.c:1646  */
+#line 240 "lang.y" /* yacc.c:1646  */
     {}
-#line 1851 "y.tab.c" /* yacc.c:1646  */
+#line 1852 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 246 "lang.y" /* yacc.c:1646  */
+#line 247 "lang.y" /* yacc.c:1646  */
     {}
-#line 1857 "y.tab.c" /* yacc.c:1646  */
+#line 1858 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 247 "lang.y" /* yacc.c:1646  */
+#line 248 "lang.y" /* yacc.c:1646  */
     {}
-#line 1863 "y.tab.c" /* yacc.c:1646  */
+#line 1864 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 250 "lang.y" /* yacc.c:1646  */
+#line 251 "lang.y" /* yacc.c:1646  */
     {}
-#line 1869 "y.tab.c" /* yacc.c:1646  */
+#line 1870 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 251 "lang.y" /* yacc.c:1646  */
+#line 252 "lang.y" /* yacc.c:1646  */
     {}
-#line 1875 "y.tab.c" /* yacc.c:1646  */
+#line 1876 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1879 "y.tab.c" /* yacc.c:1646  */
+#line 1880 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2103,7 +2104,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 256 "lang.y" /* yacc.c:1906  */
+#line 257 "lang.y" /* yacc.c:1906  */
  
 int main () {
 printf ("? "); return yyparse ();
