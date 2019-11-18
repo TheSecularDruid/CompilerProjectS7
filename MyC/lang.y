@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-  
+
 extern int yylex();
 extern int yyparse();
  
@@ -30,6 +30,7 @@ char * enumPrint(int t){
   if (t == 0) return "int" ;
   if (t == 1) return "float" ;
 }
+
 %}
 
 %union { 
@@ -116,9 +117,10 @@ did : ID                       {$$ = new_attribute();
                                 $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_register_nb();
                                 set_symbol_value(string_to_sid($1->name), $$);
                                 printf("ID\n");
-                                FILE * output_h = init("test.h"); 
-                                fprintf(output_h, "%s %s;", enumPrint($$->type_val), $$->name);
-                                fclose(output_h);
+                                FILE * output_h = fopen("test.h", "a+");
+                                fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
+                                fprintf(output_h, "\n%s r%d;\n", enumPrint($$->type_val), $$->reg_number);
+                                fclose(output_h); 
                                 }
 ;
 
@@ -167,7 +169,14 @@ AO block AF                 {}
 
 // II.1 Affectations
 
-aff : ID EQ exp               {$$->name = $1->name; $$->int_val = $3->int_val; set_symbol_value($1->name, $3); printf("Affectation\n");}
+aff : ID EQ exp               {$$->name = $1->name; 
+                              $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
+                              $$->reg_number = get_register_nb();
+                              FILE * output_c = fopen("test.c", "a+");
+                              fprintf(output_c, "\nr%d = %d\n", $$->reg_number, $$->int_val);
+                              fclose(output_c); 
+                              printf("Affectation\n");
+                              }
 | exp STAR EQ exp
 ;
 
@@ -215,7 +224,7 @@ exp
 | exp DIV exp                 {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
 | PO exp PF                   {}
 | ID                          {$$ = get_symbol_value($1->name); printf("ID de exp\n");}
-| NUMI                        {$$ = $1; printf("NUMI\n"); }
+| NUMI                        {$$->int_val = $1->int_val; printf("NUMI\n"); }
 | NUMF                        {$$ = $1;}
 
 // II.3.1 Déréférencement
@@ -256,6 +265,8 @@ arglist : exp VIR arglist     {}
 
 %% 
 int main () {
+  
 printf ("? "); return yyparse ();
+
 } 
 
