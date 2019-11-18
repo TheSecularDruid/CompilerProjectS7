@@ -133,7 +133,7 @@ vlist: did vir vlist            {}
 ;
 
 did : ID                       {$$ = new_attribute(); 
-                                $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_register_nb();
+                                $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_int_register_nb();
                                 set_symbol_value(string_to_sid($1->name), $$);
                                 printf("ID\n");
                                 FILE * output_h = fopen("test.h", "a+");
@@ -190,7 +190,7 @@ AO block AF                 {}
 
 aff : ID EQ exp               {$$->name = $1->name; 
                               $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
-                              $$->reg_number = get_register_nb();
+                              $$->reg_number = get_int_register_nb();
                               FILE * output_c = fopen("test.c", "a+");
                               fprintf(output_c, "\nr%d = %d\n", $$->reg_number, $$->int_val);
                               fclose(output_c); 
@@ -237,10 +237,10 @@ exp
 // II.3.0 Exp. arithmetiques
 : MOINS exp %prec UNA         {if($2->type_val==FLOAT) fprintf(output,"rf%d=-rf%d;\n", get_float_register_nb(),$2->reg_number);
                                if($2->type_val==INT) fprintf(output,"ri%d=-ri%d;\n", get_int_register_nb(),$2->reg_number);}
-| exp PLUS exp                {fprintf(output, "r%d=%s+%s",get_register_nb(),$1->val,$3->val); }
-| exp MOINS exp               {fprintf(output, "r%d=%s-%s", get_register_nb(),$1->val, $3->val);}
-| exp STAR exp                {fprintf(output, "r%d=%s*%s", get_register_nb(),$1->val, $3->val);}
-| exp DIV exp                 {fprintf(output, "r%d=%s/%s", get_register_nb(),$1->val, $3->val);}
+| exp PLUS exp                {printexp('+',$1,$3);}
+| exp MOINS exp               {printexp('-',$1,$3);}
+| exp STAR exp                {printexp('*',$1,$3);}
+| exp DIV exp                 {printexp('/',$3,$3);}
 | PO exp PF                   {}
 | ID                          {$$ = get_symbol_value($1->name);}
 | NUMI                        {$$->int_val = $1->int_val; printf("NUMI\n");}
