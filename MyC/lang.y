@@ -1,60 +1,25 @@
 %code requires{
 #include "Table_des_symboles.h"
 #include "Attribute.h"
+
  }
 
 %{
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
+#include <string.h>    
+#include "perso_func.h"
+    
 extern int yylex();
 extern int yyparse();
- 
+    
 void yyerror (char* s) {
-  printf ("%s\n",s);
-  
-}
-    
-int int_reg_nb = 0;
-int get_int_register_nb() {
-	return(int_reg_nb++);
-}
-
-int float_reg_nb = 0;
-int get_float_register_nb() {
-	return(float_reg_nb++);
-    } 
-    
-FILE* init(char* filename) {
-  return fopen(filename, "w+");
-}
-
-char * enumPrint(int t){
-  if (t == 0) return "int" ;
-  if (t == 1) return "float" ;
-}
-
-type printexp(char op, attribute g, attribute d) {
-    if(g->type_val==FLOAT&&d->type_val==FLOAT)
-        fprintf(output,"rf%d=rf%d"+op+"rf%d;\n", get_float_register_nb(), g->reg_number, d->reg_number);
-    if(g->type_val==FLOAT&&d->type_val==INT)
-        fprintf(output,"rf%d=rf%d"+op+"ri%d;\n", get_float_register_nb(), g->reg_number, d->reg_number);
-    if(g->type_val==INT&&d->type_val==FLOAT)
-        fprintf(output,"rf%d=ri%d"+op+"rf%d;\n", get_float_register_nb(), g->reg_number, d->reg_number);
-    if(g->type_val==INT&&d->type_val==INT) {
-        fprintf(output,"ri%d=ri%d"+op+"ri%d;\n", get_int_register_nb(), g->reg_number, d->reg_number);    
-        return INT;}
-    return FLOAT;
-}
-
-FILE * output = init("test.c");
-
-%}
-
-%union { 
-	attribute val;
+    printf ("%s\n",s);}
+ 
+ %}
+     
+     %union { 
+    attribute val;
 }
 %token <val> NUMI NUMF
 %token TINT TFLOAT STRUCT
@@ -193,7 +158,7 @@ aff : ID EQ exp               {$$->name = $1->name;
                               $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
                               $$->reg_number = get_int_register_nb();
                               FILE * output_c = fopen("test.c", "a+");
-                              fprintf(output_c, "\nr%d = %d\n", $$->reg_number, $$->int_val);
+                              fprintf(output_c, "\nri%d = %d\n", $$->reg_number, $$->int_val);
                               fclose(output_c); 
                               printf("Affectation : %d\n", get_symbol_value(string_to_sid($1->name))->reg_number);
                               }
@@ -236,15 +201,16 @@ while : WHILE                 {}
 // II.3 Expressions
 exp
 // II.3.0 Exp. arithmetiques
-: MOINS exp %prec UNA         {if($2->type_val==FLOAT) fprintf(output,"rf%d=-rf%d;\n", get_float_register_nb(),$2->reg_number);
-                               if($2->type_val==INT) fprintf(output,"ri%d=-ri%d;\n", get_int_register_nb(),$2->reg_number);}
+: MOINS exp %prec UNA         {FILE* output = fopen("test.c", "a+"); if($2->type_val==FLOAT) fprintf(output,"rf%d=-rf%d;\n", get_float_register_nb(),$2->reg_number);
+                               if($2->type_val==INT) fprintf(output,"ri%d=-ri%d;\n", get_int_register_nb(),$2->reg_number);
+			       fclose(output);}
 | exp PLUS exp                {printexp('+',$1,$3);}
 | exp MOINS exp               {printexp('-',$1,$3);}
 | exp STAR exp                {printexp('*',$1,$3);}
 | exp DIV exp                 {printexp('/',$3,$3);}
 | PO exp PF                   {}
 | ID                          {$$ = get_symbol_value($1->name);}
-| NUMI                        {$$->int_val = $1->int_val; printf("NUMI\n");}
+| NUMI                        {FILE* output=fopen("test.c","a+");$$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); printf("NUMI\n");fclose(output);}
 | NUMF                        {$$ = $1;}
 
 // II.3.1 Déréférencement
@@ -285,7 +251,6 @@ arglist : exp VIR arglist     {}
 
 %% 
 int main () {
-  
 printf ("? "); return yyparse ();
 
 } 
