@@ -126,7 +126,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 21 "lang.y" /* yacc.c:1909  */
+#line 36 "lang.y" /* yacc.c:1909  */
  
 	attribute val;
 
