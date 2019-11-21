@@ -1,4 +1,4 @@
-Grammaire
+Grammar
 
     0 $accept: prog $end
 
@@ -109,21 +109,36 @@ Grammaire
 
    74 args: arglist
    75     | %empty
+<<<<<<< Updated upstream
+
+   76 arglist: exp VIR arglist
+   77        | exp
+=======
+>>>>>>> Stashed changes
 
    76 arglist: exp VIR arglist
    77        | exp
 
 
-Terminaux, suivis des règles où ils apparaissent
+Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
+<<<<<<< Updated upstream
 NUMI (258) 60
 NUMF (259) 61
 TINT (260) 26
 TFLOAT (261) 27
 STRUCT (262) 9 29
 ID (263) 9 11 12 15 16 17 18 21 29 41 59 70 71 73
+=======
+NUMI <val> (258) 60
+NUMF <val> (259) 61
+TINT (260) 26
+TFLOAT (261) 27
+STRUCT (262) 9 29
+ID <val> (263) 9 11 12 15 16 17 18 21 29 41 59 70 71 73
+>>>>>>> Stashed changes
 AO (264) 10 23 35
 AF (265) 10 23 35
 PO (266) 15 16 44 47 51 58 73
@@ -133,6 +148,7 @@ VIR (269) 22 76
 RETURN (270) 43 44
 VOID (271) 28
 EQ (272) 41 42
+<<<<<<< Updated upstream
 IF (273) 48
 ELSE (274) 49
 WHILE (275) 52
@@ -143,6 +159,18 @@ DIFF (279) 67
 EQUAL (280) 66
 SUP (281) 65
 INF (282) 64
+=======
+IF <val> (273) 48
+ELSE <val> (274) 49
+WHILE <val> (275) 52
+AND <val> (276) 68
+OR <val> (277) 69
+NOT <val> (278) 63
+DIFF <val> (279) 67
+EQUAL <val> (280) 66
+SUP <val> (281) 65
+INF <val> (282) 64
+>>>>>>> Stashed changes
 PLUS (283) 54
 MOINS (284) 53 55
 STAR (285) 30 31 42 56 62
@@ -152,33 +180,38 @@ ARR (288) 70
 UNA (289)
 
 
-Non-terminaux, suivis des règles où ils apparaissent
+Nonterminals, with rules where they appear
 
 $accept (35)
-    à gauche: 0
+    on left: 0
 prog (36)
-    à gauche: 1, à droite: 0
+    on left: 1, on right: 0
 block (37)
+<<<<<<< Updated upstream
     à gauche: 2, à droite: 1 23 35
+=======
+    on left: 2, on right: 1 23 35
+>>>>>>> Stashed changes
 decl_list (38)
-    à gauche: 3 4, à droite: 2 3
-decl (39)
-    à gauche: 5 6 7, à droite: 3
-var_decl (40)
-    à gauche: 8, à droite: 5
+    on left: 3 4, on right: 2 3
+decl <val> (39)
+    on left: 5 6 7, on right: 3
+var_decl <val> (40)
+    on left: 8, on right: 5
 struct_decl (41)
-    à gauche: 9, à droite: 6
+    on left: 9, on right: 6
 struct (42)
-    à gauche: 10, à droite: 9
+    on left: 10, on right: 9
 attr (43)
-    à gauche: 11 12, à droite: 10 12
+    on left: 11 12, on right: 10 12
 fun_decl (44)
-    à gauche: 13, à droite: 7
+    on left: 13, on right: 7
 fun (45)
-    à gauche: 14, à droite: 13
+    on left: 14, on right: 13
 fun_head (46)
-    à gauche: 15 16, à droite: 14
+    on left: 15 16, on right: 14
 params (47)
+<<<<<<< Updated upstream
     à gauche: 17 18, à droite: 16 17
 vlist (48)
     à gauche: 19 20, à droite: 8 19
@@ -229,74 +262,139 @@ arglist (69)
 
 
 État 0
+=======
+    on left: 17 18, on right: 16 17
+vlist <val> (48)
+    on left: 19 20, on right: 8 19
+did <val> (49)
+    on left: 21, on right: 19 20
+vir <val> (50)
+    on left: 22, on right: 17 19
+fun_body (51)
+    on left: 23, on right: 14
+type <val> (52)
+    on left: 24 25, on right: 8 11 12 13 17 18
+typename <val> (53)
+    on left: 26 27 28 29, on right: 24 25
+pointer (54)
+    on left: 30 31, on right: 24 30
+inst_list (55)
+    on left: 32 33 34, on right: 2 32
+inst (56)
+    on left: 35 36 37 38 39 40, on right: 32 33 45 46 50
+aff <val> (57)
+    on left: 41 42, on right: 36
+ret (58)
+    on left: 43 44, on right: 37
+cond (59)
+    on left: 45 46, on right: 38
+bool_cond (60)
+    on left: 47, on right: 45
+if (61)
+    on left: 48, on right: 45
+else (62)
+    on left: 49, on right: 46
+loop (63)
+    on left: 50, on right: 39
+while_cond (64)
+    on left: 51, on right: 50
+while (65)
+    on left: 52, on right: 50
+exp <val> (66)
+    on left: 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
+    71 72, on right: 41 42 43 47 51 53 54 55 56 57 58 62 63 64 65 66
+    67 68 69 70 71 76 77
+app (67)
+    on left: 73, on right: 72
+args (68)
+    on left: 74 75, on right: 73
+arglist (69)
+    on left: 76 77, on right: 74 76
+
+
+State 0
+>>>>>>> Stashed changes
 
     0 $accept: . prog $end
 
-    TINT    décalage et aller à l'état 1
-    TFLOAT  décalage et aller à l'état 2
-    STRUCT  décalage et aller à l'état 3
-    VOID    décalage et aller à l'état 4
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 3
+    VOID    shift, and go to state 4
 
-    $défaut  réduction par utilisation de la règle 4 (decl_list)
+    $default  reduce using rule 4 (decl_list)
 
-    prog         aller à l'état 5
-    block        aller à l'état 6
-    decl_list    aller à l'état 7
-    decl         aller à l'état 8
-    var_decl     aller à l'état 9
-    struct_decl  aller à l'état 10
-    fun_decl     aller à l'état 11
-    type         aller à l'état 12
-    typename     aller à l'état 13
+    prog         go to state 5
+    block        go to state 6
+    decl_list    go to state 7
+    decl         go to state 8
+    var_decl     go to state 9
+    struct_decl  go to state 10
+    fun_decl     go to state 11
+    type         go to state 12
+    typename     go to state 13
 
 
-État 1
+State 1
 
    26 typename: TINT .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 26 (typename)
+=======
+    $default  reduce using rule 26 (typename)
+>>>>>>> Stashed changes
 
 
-État 2
+State 2
 
    27 typename: TFLOAT .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 27 (typename)
+=======
+    $default  reduce using rule 27 (typename)
+>>>>>>> Stashed changes
 
 
-État 3
+State 3
 
     9 struct_decl: STRUCT . ID struct
    29 typename: STRUCT . ID
 
-    ID  décalage et aller à l'état 14
+    ID  shift, and go to state 14
 
 
-État 4
+State 4
 
    28 typename: VOID .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 28 (typename)
+=======
+    $default  reduce using rule 28 (typename)
+>>>>>>> Stashed changes
 
 
-État 5
+State 5
 
     0 $accept: prog . $end
 
-    $end  décalage et aller à l'état 15
+    $end  shift, and go to state 15
 
 
-État 6
+State 6
 
     1 prog: block .
 
-    $défaut  réduction par utilisation de la règle 1 (prog)
+    $default  reduce using rule 1 (prog)
 
 
-État 7
+State 7
 
     2 block: decl_list . inst_list
 
+<<<<<<< Updated upstream
     NUMI    décalage et aller à l'état 16
     NUMF    décalage et aller à l'état 17
     ID      décalage et aller à l'état 18
@@ -327,127 +425,198 @@ arglist (69)
 
 
 État 8
+=======
+    NUMI    shift, and go to state 16
+    NUMF    shift, and go to state 17
+    ID      shift, and go to state 18
+    AO      shift, and go to state 19
+    PO      shift, and go to state 20
+    PV      shift, and go to state 21
+    RETURN  shift, and go to state 22
+    IF      shift, and go to state 23
+    ELSE    shift, and go to state 24
+    WHILE   shift, and go to state 25
+    NOT     shift, and go to state 26
+    MOINS   shift, and go to state 27
+    STAR    shift, and go to state 28
+
+    $default  reduce using rule 34 (inst_list)
+
+    inst_list  go to state 29
+    inst       go to state 30
+    aff        go to state 31
+    ret        go to state 32
+    cond       go to state 33
+    if         go to state 34
+    else       go to state 35
+    loop       go to state 36
+    while      go to state 37
+    exp        go to state 38
+    app        go to state 39
+
+
+State 8
+>>>>>>> Stashed changes
 
     3 decl_list: decl . decl_list
 
-    TINT    décalage et aller à l'état 1
-    TFLOAT  décalage et aller à l'état 2
-    STRUCT  décalage et aller à l'état 3
-    VOID    décalage et aller à l'état 4
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 3
+    VOID    shift, and go to state 4
 
-    $défaut  réduction par utilisation de la règle 4 (decl_list)
+    $default  reduce using rule 4 (decl_list)
 
-    decl_list    aller à l'état 40
-    decl         aller à l'état 8
-    var_decl     aller à l'état 9
-    struct_decl  aller à l'état 10
-    fun_decl     aller à l'état 11
-    type         aller à l'état 12
-    typename     aller à l'état 13
+    decl_list    go to state 40
+    decl         go to state 8
+    var_decl     go to state 9
+    struct_decl  go to state 10
+    fun_decl     go to state 11
+    type         go to state 12
+    typename     go to state 13
 
 
-État 9
+State 9
 
     5 decl: var_decl . PV
 
-    PV  décalage et aller à l'état 41
+    PV  shift, and go to state 41
 
 
-État 10
+State 10
 
     6 decl: struct_decl . PV
 
-    PV  décalage et aller à l'état 42
+    PV  shift, and go to state 42
 
 
-État 11
+State 11
 
     7 decl: fun_decl .
 
-    $défaut  réduction par utilisation de la règle 7 (decl)
+    $default  reduce using rule 7 (decl)
 
 
-État 12
+State 12
 
     8 var_decl: type . vlist
    13 fun_decl: type . fun
 
-    ID  décalage et aller à l'état 43
+    ID  shift, and go to state 43
 
+<<<<<<< Updated upstream
     fun       aller à l'état 44
     fun_head  aller à l'état 45
     vlist     aller à l'état 46
     did       aller à l'état 47
+=======
+    fun       go to state 44
+    fun_head  go to state 45
+    vlist     go to state 46
+    did       go to state 47
+>>>>>>> Stashed changes
 
 
-État 13
+State 13
 
    24 type: typename . pointer
    25     | typename .
 
+<<<<<<< Updated upstream
     STAR  décalage et aller à l'état 48
 
     $défaut  réduction par utilisation de la règle 25 (type)
 
     pointer  aller à l'état 49
+=======
+    STAR  shift, and go to state 48
+
+    $default  reduce using rule 25 (type)
+
+    pointer  go to state 49
+>>>>>>> Stashed changes
 
 
-État 14
+State 14
 
     9 struct_decl: STRUCT ID . struct
    29 typename: STRUCT ID .
 
+<<<<<<< Updated upstream
     AO  décalage et aller à l'état 50
 
     $défaut  réduction par utilisation de la règle 29 (typename)
 
     struct  aller à l'état 51
+=======
+    AO  shift, and go to state 50
+
+    $default  reduce using rule 29 (typename)
+
+    struct  go to state 51
+>>>>>>> Stashed changes
 
 
-État 15
+State 15
 
     0 $accept: prog $end .
 
-    $défaut  accepter
+    $default  accept
 
 
-État 16
+State 16
 
    60 exp: NUMI .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 60 (exp)
+=======
+    $default  reduce using rule 60 (exp)
+>>>>>>> Stashed changes
 
 
-État 17
+State 17
 
    61 exp: NUMF .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 61 (exp)
+=======
+    $default  reduce using rule 61 (exp)
+>>>>>>> Stashed changes
 
 
-État 18
+State 18
 
    41 aff: ID . EQ exp
    59 exp: ID .
    73 app: ID . PO args PF
 
+<<<<<<< Updated upstream
     PO  décalage et aller à l'état 52
     EQ  décalage et aller à l'état 53
 
     $défaut  réduction par utilisation de la règle 59 (exp)
+=======
+    PO  shift, and go to state 52
+    EQ  shift, and go to state 53
+
+    $default  reduce using rule 59 (exp)
+>>>>>>> Stashed changes
 
 
-État 19
+State 19
 
    35 inst: AO . block AF
 
-    TINT    décalage et aller à l'état 1
-    TFLOAT  décalage et aller à l'état 2
-    STRUCT  décalage et aller à l'état 3
-    VOID    décalage et aller à l'état 4
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 3
+    VOID    shift, and go to state 4
 
-    $défaut  réduction par utilisation de la règle 4 (decl_list)
+    $default  reduce using rule 4 (decl_list)
 
+<<<<<<< Updated upstream
     block        aller à l'état 54
     decl_list    aller à l'état 7
     decl         aller à l'état 8
@@ -456,12 +625,23 @@ arglist (69)
     fun_decl     aller à l'état 11
     type         aller à l'état 12
     typename     aller à l'état 13
+=======
+    block        go to state 54
+    decl_list    go to state 7
+    decl         go to state 8
+    var_decl     go to state 9
+    struct_decl  go to state 10
+    fun_decl     go to state 11
+    type         go to state 12
+    typename     go to state 13
+>>>>>>> Stashed changes
 
 
-État 20
+State 20
 
    58 exp: PO . exp PF
 
+<<<<<<< Updated upstream
     NUMI   décalage et aller à l'état 16
     NUMF   décalage et aller à l'état 17
     ID     décalage et aller à l'état 55
@@ -472,20 +652,37 @@ arglist (69)
 
     exp  aller à l'état 56
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 56
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 21
+State 21
 
    40 inst: PV .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 40 (inst)
+=======
+    $default  reduce using rule 40 (inst)
+>>>>>>> Stashed changes
 
 
-État 22
+State 22
 
    43 ret: RETURN . exp
    44    | RETURN . PO PF
 
+<<<<<<< Updated upstream
     NUMI   décalage et aller à l'état 16
     NUMF   décalage et aller à l'état 17
     ID     décalage et aller à l'état 55
@@ -496,33 +693,58 @@ arglist (69)
 
     exp  aller à l'état 58
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 57
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 58
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 23
+State 23
 
    48 if: IF .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 48 (if)
+=======
+    $default  reduce using rule 48 (if)
+>>>>>>> Stashed changes
 
 
-État 24
+State 24
 
    49 else: ELSE .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 49 (else)
+=======
+    $default  reduce using rule 49 (else)
+>>>>>>> Stashed changes
 
 
-État 25
+State 25
 
    52 while: WHILE .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 52 (while)
+=======
+    $default  reduce using rule 52 (while)
+>>>>>>> Stashed changes
 
 
-État 26
+State 26
 
    63 exp: NOT . exp
 
+<<<<<<< Updated upstream
     NUMI   décalage et aller à l'état 16
     NUMF   décalage et aller à l'état 17
     ID     décalage et aller à l'état 55
@@ -533,12 +755,25 @@ arglist (69)
 
     exp  aller à l'état 59
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 59
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 27
+State 27
 
    53 exp: MOINS . exp
 
+<<<<<<< Updated upstream
     NUMI   décalage et aller à l'état 16
     NUMF   décalage et aller à l'état 17
     ID     décalage et aller à l'état 55
@@ -549,12 +784,25 @@ arglist (69)
 
     exp  aller à l'état 60
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 60
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 28
+State 28
 
    62 exp: STAR . exp
 
+<<<<<<< Updated upstream
     NUMI   décalage et aller à l'état 16
     NUMF   décalage et aller à l'état 17
     ID     décalage et aller à l'état 55
@@ -565,73 +813,111 @@ arglist (69)
 
     exp  aller à l'état 61
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 61
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 29
+State 29
 
     2 block: decl_list inst_list .
 
-    $défaut  réduction par utilisation de la règle 2 (block)
+    $default  reduce using rule 2 (block)
 
 
-État 30
-
+<<<<<<< Updated upstream
    32 inst_list: inst . PV inst_list
    33          | inst .
 
     PV  décalage et aller à l'état 62
 
     $défaut  réduction par utilisation de la règle 33 (inst_list)
+=======
+State 30
+
+   32 inst_list: inst . PV inst_list
+   33          | inst .
+
+    PV  shift, and go to state 62
+>>>>>>> Stashed changes
+
+    $default  reduce using rule 33 (inst_list)
 
 
-État 31
-
+<<<<<<< Updated upstream
    36 inst: aff .
 
     $défaut  réduction par utilisation de la règle 36 (inst)
+=======
+State 31
+
+   36 inst: aff .
+>>>>>>> Stashed changes
+
+    $default  reduce using rule 36 (inst)
 
 
-État 32
-
+<<<<<<< Updated upstream
    37 inst: ret .
 
     $défaut  réduction par utilisation de la règle 37 (inst)
+=======
+State 32
+
+   37 inst: ret .
+>>>>>>> Stashed changes
+
+    $default  reduce using rule 37 (inst)
 
 
-État 33
-
+<<<<<<< Updated upstream
    38 inst: cond .
 
     $défaut  réduction par utilisation de la règle 38 (inst)
+=======
+State 33
+
+   38 inst: cond .
+>>>>>>> Stashed changes
+
+    $default  reduce using rule 38 (inst)
 
 
-État 34
-
+<<<<<<< Updated upstream
    45 cond: if . bool_cond inst
 
     PO  décalage et aller à l'état 63
 
     bool_cond  aller à l'état 64
+=======
+State 34
+
+   45 cond: if . bool_cond inst
+
+    PO  shift, and go to state 63
+>>>>>>> Stashed changes
+
+    bool_cond  go to state 64
 
 
-État 35
+<<<<<<< Updated upstream
+   46 cond: else . inst
+=======
+State 35
+>>>>>>> Stashed changes
 
    46 cond: else . inst
 
-    NUMI    décalage et aller à l'état 16
-    NUMF    décalage et aller à l'état 17
-    ID      décalage et aller à l'état 18
-    AO      décalage et aller à l'état 19
-    PO      décalage et aller à l'état 20
-    PV      décalage et aller à l'état 21
-    RETURN  décalage et aller à l'état 22
-    IF      décalage et aller à l'état 23
-    ELSE    décalage et aller à l'état 24
-    WHILE   décalage et aller à l'état 25
-    NOT     décalage et aller à l'état 26
-    MOINS   décalage et aller à l'état 27
-    STAR    décalage et aller à l'état 28
-
+<<<<<<< Updated upstream
     inst   aller à l'état 65
     aff    aller à l'état 31
     ret    aller à l'état 32
@@ -642,26 +928,69 @@ arglist (69)
     while  aller à l'état 37
     exp    aller à l'état 38
     app    aller à l'état 39
+=======
+    NUMI    shift, and go to state 16
+    NUMF    shift, and go to state 17
+    ID      shift, and go to state 18
+    AO      shift, and go to state 19
+    PO      shift, and go to state 20
+    PV      shift, and go to state 21
+    RETURN  shift, and go to state 22
+    IF      shift, and go to state 23
+    ELSE    shift, and go to state 24
+    WHILE   shift, and go to state 25
+    NOT     shift, and go to state 26
+    MOINS   shift, and go to state 27
+    STAR    shift, and go to state 28
+>>>>>>> Stashed changes
+
+    inst   go to state 65
+    aff    go to state 31
+    ret    go to state 32
+    cond   go to state 33
+    if     go to state 34
+    else   go to state 35
+    loop   go to state 36
+    while  go to state 37
+    exp    go to state 38
+    app    go to state 39
 
 
-État 36
-
+<<<<<<< Updated upstream
    39 inst: loop .
 
     $défaut  réduction par utilisation de la règle 39 (inst)
+=======
+State 36
+
+   39 inst: loop .
+>>>>>>> Stashed changes
+
+    $default  reduce using rule 39 (inst)
 
 
-État 37
-
+<<<<<<< Updated upstream
    50 loop: while . while_cond inst
 
     PO  décalage et aller à l'état 66
 
     while_cond  aller à l'état 67
+=======
+State 37
+
+   50 loop: while . while_cond inst
+
+    PO  shift, and go to state 66
+>>>>>>> Stashed changes
+
+    while_cond  go to state 67
 
 
-État 38
+<<<<<<< Updated upstream
+=======
+State 38
 
+>>>>>>> Stashed changes
    42 aff: exp . STAR EQ exp
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -676,6 +1005,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
     DIFF   décalage et aller à l'état 70
@@ -688,79 +1018,128 @@ arglist (69)
     DIV    décalage et aller à l'état 77
     DOT    décalage et aller à l'état 78
     ARR    décalage et aller à l'état 79
+=======
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 76
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+>>>>>>> Stashed changes
 
 
-État 39
+State 39
 
    72 exp: app .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 72 (exp)
+=======
+    $default  reduce using rule 72 (exp)
+>>>>>>> Stashed changes
 
 
-État 40
+State 40
 
     3 decl_list: decl decl_list .
 
-    $défaut  réduction par utilisation de la règle 3 (decl_list)
+    $default  reduce using rule 3 (decl_list)
 
 
-État 41
+State 41
 
     5 decl: var_decl PV .
 
-    $défaut  réduction par utilisation de la règle 5 (decl)
+    $default  reduce using rule 5 (decl)
 
 
-État 42
+State 42
 
     6 decl: struct_decl PV .
 
-    $défaut  réduction par utilisation de la règle 6 (decl)
+    $default  reduce using rule 6 (decl)
 
 
-État 43
+State 43
 
    15 fun_head: ID . PO PF
    16         | ID . PO params PF
    21 did: ID .
 
+<<<<<<< Updated upstream
     PO  décalage et aller à l'état 80
 
     $défaut  réduction par utilisation de la règle 21 (did)
+=======
+    PO  shift, and go to state 80
+
+    $default  reduce using rule 21 (did)
+>>>>>>> Stashed changes
 
 
-État 44
+State 44
 
    13 fun_decl: type fun .
 
-    $défaut  réduction par utilisation de la règle 13 (fun_decl)
+    $default  reduce using rule 13 (fun_decl)
 
 
-État 45
+State 45
 
    14 fun: fun_head . fun_body
 
+<<<<<<< Updated upstream
     AO  décalage et aller à l'état 81
 
     fun_body  aller à l'état 82
+=======
+    AO  shift, and go to state 81
+
+    fun_body  go to state 82
+>>>>>>> Stashed changes
 
 
-État 46
+State 46
 
     8 var_decl: type vlist .
 
-    $défaut  réduction par utilisation de la règle 8 (var_decl)
+    $default  reduce using rule 8 (var_decl)
 
 
-État 47
+State 47
 
    19 vlist: did . vir vlist
    20      | did .
 
+    VIR  shift, and go to state 83
+
+    $default  reduce using rule 20 (vlist)
+
+    vir  go to state 84
+
+
+State 48
+
+<<<<<<< Updated upstream
+   19 vlist: did . vir vlist
+   20      | did .
+
     VIR  décalage et aller à l'état 83
+=======
+   31 pointer: STAR .
+
+    $default  reduce using rule 31 (pointer)
+>>>>>>> Stashed changes
 
     $défaut  réduction par utilisation de la règle 20 (vlist)
 
+<<<<<<< Updated upstream
     vir  aller à l'état 84
 
 
@@ -769,9 +1148,19 @@ arglist (69)
    31 pointer: STAR .
 
     $défaut  réduction par utilisation de la règle 31 (pointer)
+=======
+State 49
+
+   24 type: typename pointer .
+   30 pointer: pointer . STAR
+
+    STAR  shift, and go to state 85
+
+    $default  reduce using rule 24 (type)
+>>>>>>> Stashed changes
 
 
-État 49
+State 50
 
    24 type: typename pointer .
    30 pointer: pointer . STAR
@@ -785,6 +1174,7 @@ arglist (69)
 
    10 struct: AO . attr AF
 
+<<<<<<< Updated upstream
     TINT    décalage et aller à l'état 1
     TFLOAT  décalage et aller à l'état 2
     STRUCT  décalage et aller à l'état 86
@@ -796,12 +1186,26 @@ arglist (69)
 
 
 État 51
+=======
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 86
+    VOID    shift, and go to state 4
+
+    attr      go to state 87
+    type      go to state 88
+    typename  go to state 13
+
+
+State 51
+>>>>>>> Stashed changes
 
     9 struct_decl: STRUCT ID struct .
 
-    $défaut  réduction par utilisation de la règle 9 (struct_decl)
+    $default  reduce using rule 9 (struct_decl)
 
 
+<<<<<<< Updated upstream
 État 52
 
    73 app: ID PO . args PF
@@ -846,16 +1250,71 @@ arglist (69)
 
 
 État 55
+=======
+State 52
+
+   73 app: ID PO . args PF
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    $default  reduce using rule 75 (args)
+
+    exp      go to state 89
+    app      go to state 39
+    args     go to state 90
+    arglist  go to state 91
+
+
+State 53
+
+   41 aff: ID EQ . exp
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 92
+    app  go to state 39
+
+
+State 54
+
+   35 inst: AO block . AF
+
+    AF  shift, and go to state 93
+
+
+State 55
+>>>>>>> Stashed changes
 
    59 exp: ID .
    73 app: ID . PO args PF
 
+<<<<<<< Updated upstream
     PO  décalage et aller à l'état 52
 
     $défaut  réduction par utilisation de la règle 59 (exp)
 
 
 État 56
+=======
+    PO  shift, and go to state 52
+
+    $default  reduce using rule 59 (exp)
+
+
+State 56
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -871,6 +1330,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     PF     décalage et aller à l'état 94
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
@@ -887,10 +1347,29 @@ arglist (69)
 
 
 État 57
+=======
+    PF     shift, and go to state 94
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+
+State 57
+>>>>>>> Stashed changes
 
    44 ret: RETURN PO . PF
    58 exp: PO . exp PF
 
+<<<<<<< Updated upstream
     NUMI   décalage et aller à l'état 16
     NUMF   décalage et aller à l'état 17
     ID     décalage et aller à l'état 55
@@ -905,6 +1384,22 @@ arglist (69)
 
 
 État 58
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    PF     shift, and go to state 96
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 56
+    app  go to state 39
+
+
+State 58
+>>>>>>> Stashed changes
 
    43 ret: RETURN exp .
    54 exp: exp . PLUS exp
@@ -920,6 +1415,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
     DIFF   décalage et aller à l'état 70
@@ -937,6 +1433,25 @@ arglist (69)
 
 
 État 59
+=======
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 43 (ret)
+
+
+State 59
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -952,10 +1467,17 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 63 (exp)
 
 
 État 60
+=======
+    $default  reduce using rule 63 (exp)
+
+
+State 60
+>>>>>>> Stashed changes
 
    53 exp: MOINS exp .
    54    | exp . PLUS exp
@@ -971,10 +1493,17 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 53 (exp)
 
 
 État 61
+=======
+    $default  reduce using rule 53 (exp)
+
+
+State 61
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -990,6 +1519,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 62 (exp)
 
 
@@ -1077,8 +1607,97 @@ arglist (69)
    46 cond: else inst .
 
     $défaut  réduction par utilisation de la règle 46 (cond)
+=======
+    $default  reduce using rule 62 (exp)
 
 
+State 62
+
+   32 inst_list: inst PV . inst_list
+
+    NUMI    shift, and go to state 16
+    NUMF    shift, and go to state 17
+    ID      shift, and go to state 18
+    AO      shift, and go to state 19
+    PO      shift, and go to state 20
+    PV      shift, and go to state 21
+    RETURN  shift, and go to state 22
+    IF      shift, and go to state 23
+    ELSE    shift, and go to state 24
+    WHILE   shift, and go to state 25
+    NOT     shift, and go to state 26
+    MOINS   shift, and go to state 27
+    STAR    shift, and go to state 28
+
+    $default  reduce using rule 34 (inst_list)
+
+    inst_list  go to state 97
+    inst       go to state 30
+    aff        go to state 31
+    ret        go to state 32
+    cond       go to state 33
+    if         go to state 34
+    else       go to state 35
+    loop       go to state 36
+    while      go to state 37
+    exp        go to state 38
+    app        go to state 39
+
+
+State 63
+
+   47 bool_cond: PO . exp PF
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 98
+    app  go to state 39
+
+
+State 64
+
+   45 cond: if bool_cond . inst
+
+    NUMI    shift, and go to state 16
+    NUMF    shift, and go to state 17
+    ID      shift, and go to state 18
+    AO      shift, and go to state 19
+    PO      shift, and go to state 20
+    PV      shift, and go to state 21
+    RETURN  shift, and go to state 22
+    IF      shift, and go to state 23
+    ELSE    shift, and go to state 24
+    WHILE   shift, and go to state 25
+    NOT     shift, and go to state 26
+    MOINS   shift, and go to state 27
+    STAR    shift, and go to state 28
+
+    inst   go to state 99
+    aff    go to state 31
+    ret    go to state 32
+    cond   go to state 33
+    if     go to state 34
+    else   go to state 35
+    loop   go to state 36
+    while  go to state 37
+    exp    go to state 38
+    app    go to state 39
+
+
+State 65
+
+   46 cond: else inst .
+>>>>>>> Stashed changes
+
+    $default  reduce using rule 46 (cond)
+
+<<<<<<< Updated upstream
 État 66
 
    51 while_cond: PO . exp PF
@@ -1093,26 +1712,31 @@ arglist (69)
 
     exp  aller à l'état 100
     app  aller à l'état 39
+=======
+>>>>>>> Stashed changes
 
+State 66
 
+<<<<<<< Updated upstream
 État 67
 
    50 loop: while while_cond . inst
+=======
+   51 while_cond: PO . exp PF
 
-    NUMI    décalage et aller à l'état 16
-    NUMF    décalage et aller à l'état 17
-    ID      décalage et aller à l'état 18
-    AO      décalage et aller à l'état 19
-    PO      décalage et aller à l'état 20
-    PV      décalage et aller à l'état 21
-    RETURN  décalage et aller à l'état 22
-    IF      décalage et aller à l'état 23
-    ELSE    décalage et aller à l'état 24
-    WHILE   décalage et aller à l'état 25
-    NOT     décalage et aller à l'état 26
-    MOINS   décalage et aller à l'état 27
-    STAR    décalage et aller à l'état 28
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+>>>>>>> Stashed changes
 
+    exp  go to state 100
+    app  go to state 39
+
+<<<<<<< Updated upstream
     inst   aller à l'état 101
     aff    aller à l'état 31
     ret    aller à l'état 32
@@ -1123,8 +1747,12 @@ arglist (69)
     while  aller à l'état 37
     exp    aller à l'état 38
     app    aller à l'état 39
+=======
+>>>>>>> Stashed changes
 
+State 67
 
+<<<<<<< Updated upstream
 État 68
 
    68 exp: exp AND . exp
@@ -1136,13 +1764,57 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+   50 loop: while while_cond . inst
 
-    exp  aller à l'état 102
-    app  aller à l'état 39
+    NUMI    shift, and go to state 16
+    NUMF    shift, and go to state 17
+    ID      shift, and go to state 18
+    AO      shift, and go to state 19
+    PO      shift, and go to state 20
+    PV      shift, and go to state 21
+    RETURN  shift, and go to state 22
+    IF      shift, and go to state 23
+    ELSE    shift, and go to state 24
+    WHILE   shift, and go to state 25
+    NOT     shift, and go to state 26
+    MOINS   shift, and go to state 27
+    STAR    shift, and go to state 28
+
+    inst   go to state 101
+    aff    go to state 31
+    ret    go to state 32
+    cond   go to state 33
+    if     go to state 34
+    else   go to state 35
+    loop   go to state 36
+    while  go to state 37
+    exp    go to state 38
+    app    go to state 39
 
 
-État 69
+State 68
 
+   68 exp: exp AND . exp
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 102
+    app  go to state 39
+>>>>>>> Stashed changes
+
+
+State 69
+
+   69 exp: exp OR . exp
+
+<<<<<<< Updated upstream
    69 exp: exp OR . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1152,13 +1824,25 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 103
-    app  aller à l'état 39
+    exp  go to state 103
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 70
+State 70
 
+   67 exp: exp DIFF . exp
+
+<<<<<<< Updated upstream
    67 exp: exp DIFF . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1168,13 +1852,25 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 104
-    app  aller à l'état 39
+    exp  go to state 104
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 71
+State 71
 
+   66 exp: exp EQUAL . exp
+
+<<<<<<< Updated upstream
    66 exp: exp EQUAL . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1184,13 +1880,25 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 105
-    app  aller à l'état 39
+    exp  go to state 105
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 72
+State 72
 
+   65 exp: exp SUP . exp
+
+<<<<<<< Updated upstream
    65 exp: exp SUP . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1200,13 +1908,25 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 106
-    app  aller à l'état 39
+    exp  go to state 106
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 73
+State 73
 
+   64 exp: exp INF . exp
+
+<<<<<<< Updated upstream
    64 exp: exp INF . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1216,13 +1936,25 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 107
-    app  aller à l'état 39
+    exp  go to state 107
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 74
+State 74
 
+   54 exp: exp PLUS . exp
+
+<<<<<<< Updated upstream
    54 exp: exp PLUS . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1232,13 +1964,25 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 108
-    app  aller à l'état 39
+    exp  go to state 108
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 75
+State 75
 
+   55 exp: exp MOINS . exp
+
+<<<<<<< Updated upstream
    55 exp: exp MOINS . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1251,10 +1995,26 @@ arglist (69)
 
     exp  aller à l'état 109
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
+    exp  go to state 109
+    app  go to state 39
 
-État 76
+>>>>>>> Stashed changes
 
+State 76
+
+   42 aff: exp STAR . EQ exp
+   56 exp: exp STAR . exp
+
+<<<<<<< Updated upstream
    42 aff: exp STAR . EQ exp
    56 exp: exp STAR . exp
 
@@ -1266,13 +2026,26 @@ arglist (69)
     NOT    décalage et aller à l'état 26
     MOINS  décalage et aller à l'état 27
     STAR   décalage et aller à l'état 28
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    EQ     shift, and go to state 110
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
 
-    exp  aller à l'état 111
-    app  aller à l'état 39
+    exp  go to state 111
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 77
+State 77
 
+   57 exp: exp DIV . exp
+
+<<<<<<< Updated upstream
    57 exp: exp DIV . exp
 
     NUMI   décalage et aller à l'état 16
@@ -1285,16 +2058,35 @@ arglist (69)
 
     exp  aller à l'état 112
     app  aller à l'état 39
+=======
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 112
+    app  go to state 39
+>>>>>>> Stashed changes
 
 
-État 78
+State 78
 
    71 exp: exp DOT . ID
 
-    ID  décalage et aller à l'état 113
+    ID  shift, and go to state 113
 
 
-État 79
+State 79
+
+   70 exp: exp ARR . ID
+
+    ID  shift, and go to state 114
+
+
+State 80
 
    70 exp: exp ARR . ID
 
@@ -1306,6 +2098,7 @@ arglist (69)
    15 fun_head: ID PO . PF
    16         | ID PO . params PF
 
+<<<<<<< Updated upstream
     TINT    décalage et aller à l'état 1
     TFLOAT  décalage et aller à l'état 2
     STRUCT  décalage et aller à l'état 86
@@ -1320,14 +2113,54 @@ arglist (69)
 État 81
 
    23 fun_body: AO . block AF
+=======
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 86
+    PF      shift, and go to state 115
+    VOID    shift, and go to state 4
 
-    TINT    décalage et aller à l'état 1
-    TFLOAT  décalage et aller à l'état 2
-    STRUCT  décalage et aller à l'état 3
-    VOID    décalage et aller à l'état 4
+    params    go to state 116
+    type      go to state 117
+    typename  go to state 13
 
-    $défaut  réduction par utilisation de la règle 4 (decl_list)
 
+State 81
+
+   23 fun_body: AO . block AF
+
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 3
+    VOID    shift, and go to state 4
+
+    $default  reduce using rule 4 (decl_list)
+
+    block        go to state 118
+    decl_list    go to state 7
+    decl         go to state 8
+    var_decl     go to state 9
+    struct_decl  go to state 10
+    fun_decl     go to state 11
+    type         go to state 12
+    typename     go to state 13
+
+
+State 82
+
+   14 fun: fun_head fun_body .
+
+    $default  reduce using rule 14 (fun)
+
+
+State 83
+>>>>>>> Stashed changes
+
+   22 vir: VIR .
+
+    $default  reduce using rule 22 (vir)
+
+<<<<<<< Updated upstream
     block        aller à l'état 118
     decl_list    aller à l'état 7
     decl         aller à l'état 8
@@ -1336,15 +2169,24 @@ arglist (69)
     fun_decl     aller à l'état 11
     type         aller à l'état 12
     typename     aller à l'état 13
+=======
+>>>>>>> Stashed changes
 
+State 84
 
+<<<<<<< Updated upstream
 État 82
+=======
+   19 vlist: did vir . vlist
+>>>>>>> Stashed changes
 
-   14 fun: fun_head fun_body .
+    ID  shift, and go to state 119
 
-    $défaut  réduction par utilisation de la règle 14 (fun)
+    vlist  go to state 120
+    did    go to state 47
 
 
+<<<<<<< Updated upstream
 État 83
 
    22 vir: VIR .
@@ -1360,39 +2202,94 @@ arglist (69)
 
     vlist  aller à l'état 120
     did    aller à l'état 47
-
-
-État 85
+=======
+State 85
 
    30 pointer: pointer STAR .
 
+    $default  reduce using rule 30 (pointer)
+>>>>>>> Stashed changes
+
+
+State 86
+
+<<<<<<< Updated upstream
+   30 pointer: pointer STAR .
+
     $défaut  réduction par utilisation de la règle 30 (pointer)
+=======
+   29 typename: STRUCT . ID
+
+    ID  shift, and go to state 121
+>>>>>>> Stashed changes
 
 
-État 86
+State 87
 
    29 typename: STRUCT . ID
 
+<<<<<<< Updated upstream
     ID  décalage et aller à l'état 121
+=======
+    AF  shift, and go to state 122
+>>>>>>> Stashed changes
 
 
-État 87
+State 88
 
    10 struct: AO attr . AF
 
+<<<<<<< Updated upstream
     AF  décalage et aller à l'état 122
+=======
+    ID  shift, and go to state 123
+>>>>>>> Stashed changes
 
 
-État 88
+State 89
 
+<<<<<<< Updated upstream
    11 attr: type . ID
    12     | type . ID PV attr
 
     ID  décalage et aller à l'état 123
+=======
+   54 exp: exp . PLUS exp
+   55    | exp . MOINS exp
+   56    | exp . STAR exp
+   57    | exp . DIV exp
+   64    | exp . INF exp
+   65    | exp . SUP exp
+   66    | exp . EQUAL exp
+   67    | exp . DIFF exp
+   68    | exp . AND exp
+   69    | exp . OR exp
+   70    | exp . ARR ID
+   71    | exp . DOT ID
+   76 arglist: exp . VIR arglist
+   77        | exp .
+
+    VIR    shift, and go to state 124
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 77 (arglist)
+>>>>>>> Stashed changes
 
 
-État 89
+State 90
 
+<<<<<<< Updated upstream
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
    56    | exp . STAR exp
@@ -1423,24 +2320,67 @@ arglist (69)
     ARR    décalage et aller à l'état 79
 
     $défaut  réduction par utilisation de la règle 77 (arglist)
+=======
+   73 app: ID PO args . PF
+
+    PF  shift, and go to state 125
+>>>>>>> Stashed changes
 
 
-État 90
+State 91
 
+<<<<<<< Updated upstream
    73 app: ID PO args . PF
 
     PF  décalage et aller à l'état 125
+=======
+   74 args: arglist .
+
+    $default  reduce using rule 74 (args)
+>>>>>>> Stashed changes
 
 
-État 91
+State 92
 
+<<<<<<< Updated upstream
    74 args: arglist .
 
     $défaut  réduction par utilisation de la règle 74 (args)
+=======
+   41 aff: ID EQ exp .
+   54 exp: exp . PLUS exp
+   55    | exp . MOINS exp
+   56    | exp . STAR exp
+   57    | exp . DIV exp
+   64    | exp . INF exp
+   65    | exp . SUP exp
+   66    | exp . EQUAL exp
+   67    | exp . DIFF exp
+   68    | exp . AND exp
+   69    | exp . OR exp
+   70    | exp . ARR ID
+   71    | exp . DOT ID
+
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 41 (aff)
+>>>>>>> Stashed changes
 
 
-État 92
+State 93
 
+<<<<<<< Updated upstream
    41 aff: ID EQ exp .
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1469,17 +2409,29 @@ arglist (69)
     ARR    décalage et aller à l'état 79
 
     $défaut  réduction par utilisation de la règle 41 (aff)
+=======
+   35 inst: AO block AF .
+
+    $default  reduce using rule 35 (inst)
+>>>>>>> Stashed changes
 
 
-État 93
+State 94
 
+<<<<<<< Updated upstream
    35 inst: AO block AF .
 
     $défaut  réduction par utilisation de la règle 35 (inst)
+=======
+   58 exp: PO exp PF .
+
+    $default  reduce using rule 58 (exp)
+>>>>>>> Stashed changes
 
 
-État 94
+State 95
 
+<<<<<<< Updated upstream
    58 exp: PO exp PF .
 
     $défaut  réduction par utilisation de la règle 58 (exp)
@@ -1506,17 +2458,76 @@ arglist (69)
    44 ret: RETURN PO PF .
 
     $défaut  réduction par utilisation de la règle 44 (ret)
+=======
+   56 exp: exp STAR . exp
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 111
+    app  go to state 39
 
 
-État 97
+State 96
+
+   44 ret: RETURN PO PF .
+
+    $default  reduce using rule 44 (ret)
+
+
+State 97
 
    32 inst_list: inst PV inst_list .
 
+    $default  reduce using rule 32 (inst_list)
+>>>>>>> Stashed changes
+
+
+State 98
+
+<<<<<<< Updated upstream
+   32 inst_list: inst PV inst_list .
+
     $défaut  réduction par utilisation de la règle 32 (inst_list)
+=======
+   47 bool_cond: PO exp . PF
+   54 exp: exp . PLUS exp
+   55    | exp . MOINS exp
+   56    | exp . STAR exp
+   57    | exp . DIV exp
+   64    | exp . INF exp
+   65    | exp . SUP exp
+   66    | exp . EQUAL exp
+   67    | exp . DIFF exp
+   68    | exp . AND exp
+   69    | exp . OR exp
+   70    | exp . ARR ID
+   71    | exp . DOT ID
+
+    PF     shift, and go to state 126
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+>>>>>>> Stashed changes
 
 
-État 98
+State 99
 
+<<<<<<< Updated upstream
    47 bool_cond: PO exp . PF
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1544,10 +2555,16 @@ arglist (69)
     DIV    décalage et aller à l'état 77
     DOT    décalage et aller à l'état 78
     ARR    décalage et aller à l'état 79
+=======
+   45 cond: if bool_cond inst .
+
+    $default  reduce using rule 45 (cond)
+>>>>>>> Stashed changes
 
 
-État 99
+State 100
 
+<<<<<<< Updated upstream
    45 cond: if bool_cond inst .
 
     $défaut  réduction par utilisation de la règle 45 (cond)
@@ -1592,6 +2609,45 @@ arglist (69)
 
 
 État 102
+=======
+   51 while_cond: PO exp . PF
+   54 exp: exp . PLUS exp
+   55    | exp . MOINS exp
+   56    | exp . STAR exp
+   57    | exp . DIV exp
+   64    | exp . INF exp
+   65    | exp . SUP exp
+   66    | exp . EQUAL exp
+   67    | exp . DIFF exp
+   68    | exp . AND exp
+   69    | exp . OR exp
+   70    | exp . ARR ID
+   71    | exp . DOT ID
+
+    PF     shift, and go to state 127
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+
+State 101
+
+   50 loop: while while_cond inst .
+
+    $default  reduce using rule 50 (loop)
+
+
+State 102
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1607,6 +2663,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     DOT  décalage et aller à l'état 78
     ARR  décalage et aller à l'état 79
 
@@ -1614,6 +2671,15 @@ arglist (69)
 
 
 État 103
+=======
+    DOT  shift, and go to state 78
+    ARR  shift, and go to state 79
+
+    $default  reduce using rule 68 (exp)
+
+
+State 103
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1629,6 +2695,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND  décalage et aller à l'état 68
     DOT  décalage et aller à l'état 78
     ARR  décalage et aller à l'état 79
@@ -1637,6 +2704,16 @@ arglist (69)
 
 
 État 104
+=======
+    AND  shift, and go to state 68
+    DOT  shift, and go to state 78
+    ARR  shift, and go to state 79
+
+    $default  reduce using rule 69 (exp)
+
+
+State 104
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1652,6 +2729,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
     PLUS   décalage et aller à l'état 74
@@ -1665,6 +2743,21 @@ arglist (69)
 
 
 État 105
+=======
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 67 (exp)
+
+
+State 105
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1680,6 +2773,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
     PLUS   décalage et aller à l'état 74
@@ -1693,6 +2787,21 @@ arglist (69)
 
 
 État 106
+=======
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 66 (exp)
+
+
+State 106
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1708,6 +2817,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
     PLUS   décalage et aller à l'état 74
@@ -1721,6 +2831,21 @@ arglist (69)
 
 
 État 107
+=======
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 65 (exp)
+
+
+State 107
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1736,6 +2861,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND    décalage et aller à l'état 68
     OR     décalage et aller à l'état 69
     PLUS   décalage et aller à l'état 74
@@ -1749,6 +2875,21 @@ arglist (69)
 
 
 État 108
+=======
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 64 (exp)
+
+
+State 108
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    54    | exp PLUS exp .
@@ -1764,6 +2905,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND   décalage et aller à l'état 68
     OR    décalage et aller à l'état 69
     STAR  décalage et aller à l'état 95
@@ -1775,6 +2917,19 @@ arglist (69)
 
 
 État 109
+=======
+    AND   shift, and go to state 68
+    OR    shift, and go to state 69
+    STAR  shift, and go to state 95
+    DIV   shift, and go to state 77
+    DOT   shift, and go to state 78
+    ARR   shift, and go to state 79
+
+    $default  reduce using rule 54 (exp)
+
+
+State 109
+>>>>>>> Stashed changes
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1790,6 +2945,7 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+<<<<<<< Updated upstream
     AND   décalage et aller à l'état 68
     OR    décalage et aller à l'état 69
     STAR  décalage et aller à l'état 95
@@ -1817,6 +2973,34 @@ arglist (69)
 
 
 État 111
+=======
+    AND   shift, and go to state 68
+    OR    shift, and go to state 69
+    STAR  shift, and go to state 95
+    DIV   shift, and go to state 77
+    DOT   shift, and go to state 78
+    ARR   shift, and go to state 79
+
+    $default  reduce using rule 55 (exp)
+
+
+State 110
+
+   42 aff: exp STAR EQ . exp
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp  go to state 128
+    app  go to state 39
+
+
+State 111
 
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
@@ -1832,16 +3016,54 @@ arglist (69)
    70    | exp . ARR ID
    71    | exp . DOT ID
 
+    AND  shift, and go to state 68
+    OR   shift, and go to state 69
+    DOT  shift, and go to state 78
+    ARR  shift, and go to state 79
+
+    $default  reduce using rule 56 (exp)
+
+
+State 112
+>>>>>>> Stashed changes
+
+   54 exp: exp . PLUS exp
+   55    | exp . MOINS exp
+   56    | exp . STAR exp
+<<<<<<< Updated upstream
+   56    | exp STAR exp .
+   57    | exp . DIV exp
+=======
+   57    | exp . DIV exp
+   57    | exp DIV exp .
+>>>>>>> Stashed changes
+   64    | exp . INF exp
+   65    | exp . SUP exp
+   66    | exp . EQUAL exp
+   67    | exp . DIFF exp
+   68    | exp . AND exp
+   69    | exp . OR exp
+   70    | exp . ARR ID
+   71    | exp . DOT ID
+
+<<<<<<< Updated upstream
     AND  décalage et aller à l'état 68
     OR   décalage et aller à l'état 69
     DOT  décalage et aller à l'état 78
     ARR  décalage et aller à l'état 79
+=======
+    AND  shift, and go to state 68
+    OR   shift, and go to state 69
+    DOT  shift, and go to state 78
+    ARR  shift, and go to state 79
+>>>>>>> Stashed changes
 
-    $défaut  réduction par utilisation de la règle 56 (exp)
+    $default  reduce using rule 57 (exp)
 
 
-État 112
+State 113
 
+<<<<<<< Updated upstream
    54 exp: exp . PLUS exp
    55    | exp . MOINS exp
    56    | exp . STAR exp
@@ -1862,33 +3084,53 @@ arglist (69)
     ARR  décalage et aller à l'état 79
 
     $défaut  réduction par utilisation de la règle 57 (exp)
+=======
+   71 exp: exp DOT ID .
+
+    $default  reduce using rule 71 (exp)
+>>>>>>> Stashed changes
 
 
-État 113
+State 114
 
+<<<<<<< Updated upstream
    71 exp: exp DOT ID .
 
     $défaut  réduction par utilisation de la règle 71 (exp)
+=======
+   70 exp: exp ARR ID .
+
+    $default  reduce using rule 70 (exp)
+>>>>>>> Stashed changes
 
 
-État 114
+State 115
 
    70 exp: exp ARR ID .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 70 (exp)
+=======
+    $default  reduce using rule 15 (fun_head)
+>>>>>>> Stashed changes
 
 
-État 115
+State 116
 
    15 fun_head: ID PO PF .
 
+<<<<<<< Updated upstream
     $défaut  réduction par utilisation de la règle 15 (fun_head)
+=======
+    PF  shift, and go to state 129
+>>>>>>> Stashed changes
 
 
-État 116
+State 117
 
    16 fun_head: ID PO params . PF
 
+<<<<<<< Updated upstream
     PF  décalage et aller à l'état 129
 
 
@@ -1898,30 +3140,58 @@ arglist (69)
    18       | type . ID
 
     ID  décalage et aller à l'état 130
+=======
+    ID  shift, and go to state 130
 
 
-État 118
+State 118
 
    23 fun_body: AO block . AF
 
+    AF  shift, and go to state 131
+>>>>>>> Stashed changes
+
+
+State 119
+
+<<<<<<< Updated upstream
+   23 fun_body: AO block . AF
+
     AF  décalage et aller à l'état 131
+=======
+   21 did: ID .
+
+    $default  reduce using rule 21 (did)
+>>>>>>> Stashed changes
 
 
-État 119
+State 120
 
+<<<<<<< Updated upstream
    21 did: ID .
 
     $défaut  réduction par utilisation de la règle 21 (did)
+=======
+   19 vlist: did vir vlist .
+
+    $default  reduce using rule 19 (vlist)
+>>>>>>> Stashed changes
 
 
-État 120
+State 121
 
+<<<<<<< Updated upstream
    19 vlist: did vir vlist .
 
     $défaut  réduction par utilisation de la règle 19 (vlist)
+=======
+   29 typename: STRUCT ID .
+
+    $default  reduce using rule 29 (typename)
+>>>>>>> Stashed changes
 
 
-État 121
+State 122
 
    29 typename: STRUCT ID .
 
@@ -1932,19 +3202,28 @@ arglist (69)
 
    10 struct: AO attr AF .
 
-    $défaut  réduction par utilisation de la règle 10 (struct)
+    $default  reduce using rule 10 (struct)
 
 
+<<<<<<< Updated upstream
 État 123
+=======
+State 123
+>>>>>>> Stashed changes
 
    11 attr: type ID .
    12     | type ID . PV attr
 
+<<<<<<< Updated upstream
     PV  décalage et aller à l'état 132
+=======
+    PV  shift, and go to state 132
+>>>>>>> Stashed changes
 
-    $défaut  réduction par utilisation de la règle 11 (attr)
+    $default  reduce using rule 11 (attr)
 
 
+<<<<<<< Updated upstream
 État 124
 
    76 arglist: exp VIR . arglist
@@ -1960,30 +3239,97 @@ arglist (69)
     exp      aller à l'état 89
     app      aller à l'état 39
     arglist  aller à l'état 133
+=======
+State 124
+
+   76 arglist: exp VIR . arglist
+
+    NUMI   shift, and go to state 16
+    NUMF   shift, and go to state 17
+    ID     shift, and go to state 55
+    PO     shift, and go to state 20
+    NOT    shift, and go to state 26
+    MOINS  shift, and go to state 27
+    STAR   shift, and go to state 28
+
+    exp      go to state 89
+    app      go to state 39
+    arglist  go to state 133
 
 
-État 125
+State 125
 
    73 app: ID PO args PF .
 
+    $default  reduce using rule 73 (app)
+>>>>>>> Stashed changes
+
+
+State 126
+
+<<<<<<< Updated upstream
+   73 app: ID PO args PF .
+
     $défaut  réduction par utilisation de la règle 73 (app)
+=======
+   47 bool_cond: PO exp PF .
+
+    $default  reduce using rule 47 (bool_cond)
+>>>>>>> Stashed changes
 
 
-État 126
+State 127
 
+<<<<<<< Updated upstream
    47 bool_cond: PO exp PF .
 
     $défaut  réduction par utilisation de la règle 47 (bool_cond)
+=======
+   51 while_cond: PO exp PF .
+
+    $default  reduce using rule 51 (while_cond)
+>>>>>>> Stashed changes
 
 
-État 127
+State 128
 
+<<<<<<< Updated upstream
    51 while_cond: PO exp PF .
 
     $défaut  réduction par utilisation de la règle 51 (while_cond)
+=======
+   42 aff: exp STAR EQ exp .
+   54 exp: exp . PLUS exp
+   55    | exp . MOINS exp
+   56    | exp . STAR exp
+   57    | exp . DIV exp
+   64    | exp . INF exp
+   65    | exp . SUP exp
+   66    | exp . EQUAL exp
+   67    | exp . DIFF exp
+   68    | exp . AND exp
+   69    | exp . OR exp
+   70    | exp . ARR ID
+   71    | exp . DOT ID
+
+    AND    shift, and go to state 68
+    OR     shift, and go to state 69
+    DIFF   shift, and go to state 70
+    EQUAL  shift, and go to state 71
+    SUP    shift, and go to state 72
+    INF    shift, and go to state 73
+    PLUS   shift, and go to state 74
+    MOINS  shift, and go to state 75
+    STAR   shift, and go to state 95
+    DIV    shift, and go to state 77
+    DOT    shift, and go to state 78
+    ARR    shift, and go to state 79
+
+    $default  reduce using rule 42 (aff)
+>>>>>>> Stashed changes
 
 
-État 128
+State 129
 
    42 aff: exp STAR EQ exp .
    54 exp: exp . PLUS exp
@@ -2019,18 +3365,27 @@ arglist (69)
 
    16 fun_head: ID PO params PF .
 
-    $défaut  réduction par utilisation de la règle 16 (fun_head)
+    $default  reduce using rule 16 (fun_head)
 
 
+<<<<<<< Updated upstream
 État 130
+=======
+State 130
+>>>>>>> Stashed changes
 
    17 params: type ID . vir params
    18       | type ID .
 
+<<<<<<< Updated upstream
     VIR  décalage et aller à l'état 83
+=======
+    VIR  shift, and go to state 83
+>>>>>>> Stashed changes
 
-    $défaut  réduction par utilisation de la règle 18 (params)
+    $default  reduce using rule 18 (params)
 
+<<<<<<< Updated upstream
     vir  aller à l'état 134
 
 
@@ -2077,14 +3432,66 @@ arglist (69)
 
 
 État 135
+=======
+    vir  go to state 134
+
+
+State 131
+
+   23 fun_body: AO block AF .
+
+    $default  reduce using rule 23 (fun_body)
+
+
+State 132
+
+   12 attr: type ID PV . attr
+
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 86
+    VOID    shift, and go to state 4
+
+    attr      go to state 135
+    type      go to state 88
+    typename  go to state 13
+
+
+State 133
+
+   76 arglist: exp VIR arglist .
+
+    $default  reduce using rule 76 (arglist)
+
+
+State 134
+
+   17 params: type ID vir . params
+
+    TINT    shift, and go to state 1
+    TFLOAT  shift, and go to state 2
+    STRUCT  shift, and go to state 86
+    VOID    shift, and go to state 4
+
+    params    go to state 136
+    type      go to state 117
+    typename  go to state 13
+
+
+State 135
+>>>>>>> Stashed changes
 
    12 attr: type ID PV attr .
 
-    $défaut  réduction par utilisation de la règle 12 (attr)
+    $default  reduce using rule 12 (attr)
 
 
+<<<<<<< Updated upstream
 État 136
+=======
+State 136
+>>>>>>> Stashed changes
 
    17 params: type ID vir params .
 
-    $défaut  réduction par utilisation de la règle 17 (params)
+    $default  reduce using rule 17 (params)

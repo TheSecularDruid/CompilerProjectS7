@@ -16,13 +16,17 @@ void yyerror (char* s) {
   printf ("%s\n",s);
   
 }
-
-
-int reg_nb = 0;
-int get_register_nb() {
-  return(reg_nb++);
+    
+int int_reg_nb = 0;
+int get_int_register_nb() {
+	return(int_reg_nb++);
 }
 
+int float_reg_nb = 0;
+int get_float_register_nb() {
+	return(float_reg_nb++);
+    } 
+    
 FILE* init(char* filename) {
   return fopen(filename, "w+");
 }
@@ -31,6 +35,21 @@ char * enumPrint(int t){
   if (t == 0) return "int" ;
   if (t == 1) return "float" ;
 }
+
+type printexp(char op, attribute g, attribute d) {
+    if(g->type_val==FLOAT&&d->type_val==FLOAT)
+        fprintf(output,"rf%d=rf%d"+op+"rf%d;\n", get_float_register_nb(), g->reg_number, d->reg_number);
+    if(g->type_val==FLOAT&&d->type_val==INT)
+        fprintf(output,"rf%d=rf%d"+op+"ri%d;\n", get_float_register_nb(), g->reg_number, d->reg_number);
+    if(g->type_val==INT&&d->type_val==FLOAT)
+        fprintf(output,"rf%d=ri%d"+op+"rf%d;\n", get_float_register_nb(), g->reg_number, d->reg_number);
+    if(g->type_val==INT&&d->type_val==INT) {
+        fprintf(output,"ri%d=ri%d"+op+"ri%d;\n", get_int_register_nb(), g->reg_number, d->reg_number);    
+        return INT;}
+    return FLOAT;
+}
+
+FILE * output = init("test.c");
 
 %}
 
@@ -115,7 +134,7 @@ vlist: did vir vlist            {}
 ;
 
 did : ID                       {$$ = new_attribute(); 
-                                $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_register_nb();
+                                $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_int_register_nb();
                                 set_symbol_value(string_to_sid($1->name), $$);
                                 printf("ID\n");
                                 FILE * output_h = fopen("test.h", "a+");
@@ -171,7 +190,7 @@ AO block AF                 {}
 // II.1 Affectations
 
 
-aff : ID EQ exp               {$$->name = $1->name; 
+aff : ID EQ exp               {$$->name = $1->name;
                               $$->int_val = $3->int_val;    
                               attribute recup = get_symbol_value($$->name); 
                               $$->reg_number = recup->reg_number; 
@@ -219,22 +238,22 @@ while : WHILE                 {}
 // II.3 Expressions
 exp
 // II.3.0 Exp. arithmetiques
-: MOINS exp %prec UNA         {}
-//on va supposer que le fichier marche
-| exp PLUS exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d",get_register_nb(),$1->int_val,$3->int_val); fclose(output);}
-| exp MOINS exp               {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
-| exp STAR exp                {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
-| exp DIV exp                 {FILE * output = init("test.c"); fprintf(output, "r%d=%d+%d", get_register_nb(),$1->int_val, $3->int_val);fclose(output);}
+: MOINS exp %prec UNA         {if($2->type_val==FLOAT) fprintf(output,"rf%d=-rf%d;\n", get_float_register_nb(),$2->reg_number);
+                               if($2->type_val==INT) fprintf(output,"ri%d=-ri%d;\n", get_int_register_nb(),$2->reg_number);}
+| exp PLUS exp                {printexp('+',$1,$3);}
+| exp MOINS exp               {printexp('-',$1,$3);}
+| exp STAR exp                {printexp('*',$1,$3);}
+| exp DIV exp                 {printexp('/',$3,$3);}
 | PO exp PF                   {}
-| ID                          {$$ = get_symbol_value($1->name); printf("ID de exp\n");}
-| NUMI                        {$$->int_val = $1->int_val; printf("NUMI\n"); }
+| ID                          {$$ = get_symbol_value($1->name);}
+| NUMI                        {$$->int_val = $1->int_val; printf("NUMI\n");}
 | NUMF                        {$$ = $1;}
 
-// II.3.1 DÃ©rÃ©fÃ©rencement
+// II.3.1 Déréférencement
 
 | STAR exp %prec UNA          {}
 
-// II.3.2. BoolÃ©ens
+// II.3.2. Booléens
 
 | NOT exp %prec UNA           {}
 | exp INF exp                 {}
