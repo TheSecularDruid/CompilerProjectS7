@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern int yylex();
 extern int yyparse();
@@ -119,7 +120,7 @@ did : ID                       {$$ = new_attribute();
                                 printf("ID\n");
                                 FILE * output_h = fopen("test.h", "a+");
                                 fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
-                                fprintf(output_h, "\n%s r%d;\n", enumPrint($$->type_val), $$->reg_number);
+                                fprintf(output_h, "\n%s r%d\n;", enumPrint($$->type_val), $$->reg_number);
                                 fclose(output_h); 
                                 }
 ;
@@ -169,13 +170,15 @@ AO block AF                 {}
 
 // II.1 Affectations
 
+
 aff : ID EQ exp               {$$->name = $1->name; 
-                              $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
-                              $$->reg_number = get_register_nb();
+                              $$->int_val = $3->int_val;    
+                              attribute recup = get_symbol_value($$->name); 
+                              $$->reg_number = recup->reg_number; 
                               FILE * output_c = fopen("test.c", "a+");
-                              fprintf(output_c, "\nr%d = %d\n", $$->reg_number, $$->int_val);
+                              fprintf(output_c, "\nr%d = %d\n", get_symbol_value(string_to_sid($1->name))->reg_number, $$->int_val);
                               fclose(output_c); 
-                              printf("Affectation\n");
+                              printf("Affectation : %d\n", get_symbol_value(string_to_sid($1->name))->reg_number);
                               }
 | exp STAR EQ exp
 ;
