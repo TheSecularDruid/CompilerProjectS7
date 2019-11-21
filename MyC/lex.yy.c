@@ -913,7 +913,7 @@ YY_RULE_SETUP
 #line 50 "lang.l"
 { yylval.val = new_attribute();
                            yylval.val -> type_val = INT;
-	        	   yylval.val -> int_val =  atoi (yytext);
+	        	           yylval.val -> int_val =  atoi (yytext);
                            return NUMI; }
 	YY_BREAK
 case 30:
@@ -921,7 +921,7 @@ YY_RULE_SETUP
 #line 54 "lang.l"
 { yylval.val = new_attribute();
                            yylval.val -> type_val = FLOAT;
-		           yylval.val -> int_val =  atof (yytext);
+		                   yylval.val -> float_val =  atof (yytext);
                            return NUMF; }
 	YY_BREAK
 case 31:
@@ -929,7 +929,7 @@ YY_RULE_SETUP
 #line 58 "lang.l"
 { yylval.val = new_attribute();
                            yylval.val -> name = string_to_sid(yytext);
-		           return ID; }
+		                   return ID; }
 	YY_BREAK
 case 32:
 /* rule 32 can match eol */

@@ -1,57 +1,85 @@
 
-int a;
+int x;
 
 int r0
 ;
-int b;
+float x;
 
-int r1
+float r0
+;
+int k;
+
+int r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float c;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
+;
+float x;
+
+float r0
 ;
 int x;
 
 int r0
 ;
-int y;
+float x;
 
-int r1
+float r0
 ;
-int a;
+int c;
 
 int r0
 ;
-int b;
+float x;
 
-int r1
+float r0
 ;
-int a;
+float x;
 
-int r0
+float r0
 ;
-int b;
+float x;
 
-int r1
-;
-int a;
-
-int r0
-;
-int b;
-
-int r1
-;
-int a;
-
-int r0
-;
-int b;
-
-int r1
-;
-int a;
-
-int r0
-;
-int b;
-
-int r1
+float r0
 ;

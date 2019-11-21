@@ -98,14 +98,23 @@ vlist: did vir vlist            {}
   
 ;
 
-did : ID                       {$$ = new_attribute(); 
-                                $$->name = $1->name; $$->type_val = $<val>0->type_val; $$->reg_number = get_int_register_nb();
-                                set_symbol_value(string_to_sid($1->name), $$);
-                                printf("ID\n");
+did : ID                       {
+                                $$ =  new_attribute(); 
+                                $$->name = $1->name; $$->type_val = $<val>0->type_val; 
+                                if ($$->type_val == 0){
+                                    $$->reg_number = get_int_register_nb();
+                                    set_symbol_value(string_to_sid($1->name), $$);
+                                }else{
+                                    $$->reg_number = get_float_register_nb();
+                                    set_symbol_value(string_to_sid($1->name), $$);
+                                }
                                 FILE * output_h = fopen("test.h", "a+");
                                 fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
                                 fprintf(output_h, "\n%s r%d\n;", enumPrint($$->type_val), $$->reg_number);
                                 fclose(output_h); 
+            
+                                printf("ID\n");
+
                                 }
 ;
 
@@ -118,13 +127,13 @@ fun_body : AO block AF         {}
 // I.4. Types
 type
 : typename pointer             {}
-| typename                     {$$->type_val = $1->type_val; printf("typename\n");}
+| typename                     {$$->type_val = $1->type_val; printf("typename\n ");}
 ;
 
 typename
 : TINT                          {$$ = new_attribute(); $$->type_val = INT; printf("TINT\n");
                                 }
-| TFLOAT                        {$$->type_val = FLOAT; }
+| TFLOAT                        {$$ = new_attribute(); $$->type_val = FLOAT; printf("TFLOAT\n");}
 | VOID                          {}
 | STRUCT ID                     {}
 ;
@@ -154,13 +163,31 @@ AO block AF                 {}
 
 // II.1 Affectations
 
-aff : ID EQ exp               {$$->name = $1->name; 
-                              $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
-                              $$->reg_number = get_int_register_nb();
-                              FILE * output_c = fopen("test.c", "a+");
-                              fprintf(output_c, "\nri%d = %d\n", $$->reg_number, $$->int_val);
-                              fclose(output_c); 
-                              printf("Affectation : %d\n", get_symbol_value(string_to_sid($1->name))->reg_number);
+aff : ID EQ exp               {
+                              $$->name = $1->name; 
+                              $$->type_val = get_symbol_value($1->name)->type_val; 
+
+                              if ($1->type_val != $3->type_val){
+                                  printf("ERREUR de type dans l'affectation\n"); 
+                                  exit(-1); 
+                              }
+                              if ($$->type_val == 0){
+                                $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
+                                $$->reg_number = get_int_register_nb();
+                                FILE * output_c = fopen("test.c", "a+");
+                                fprintf(output_c, "\nri%d = %d\n", $$->reg_number, $$->int_val);
+                                fclose(output_c); 
+                              }else if ($1->type_val == 1){
+                                $$->float_val = $3->float_val; set_symbol_value($1->name, $3); 
+                                $$->reg_number = get_float_register_nb();
+                                FILE * output_c = fopen("test.c", "a+");
+                                fprintf(output_c, "\nri%d = %f\n", $$->reg_number, $$->float_val);
+                                fclose(output_c); 
+                              }else{
+                                  perror("Type inconnu\n");
+                              }
+                              
+                              printf("Affectation\n"); 
                               }
 | exp STAR EQ exp
 ;
@@ -210,14 +237,18 @@ exp
 | exp DIV exp                 {printexp('/',$3,$3);}
 | PO exp PF                   {}
 | ID                          {$$ = get_symbol_value($1->name);}
-| NUMI                        {FILE* output=fopen("test.c","a+");$$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); printf("NUMI\n");fclose(output);}
-| NUMF                        {$$ = $1;}
+| NUMI                        {FILE* output = fopen("test.c","a+"); $$->type_val = INT; 
+                              $$->int_val = $1->int_val; 
+                              $$->reg_number = get_int_register_nb(); printf("NUMI\n"); fclose(output);  
+                              }
+| NUMF                        {FILE* output = fopen("test.c","a+"); $$->type_val = FLOAT; $$->float_val = $1->float_val; 
+                              $$->reg_number = get_float_register_nb(); printf("NUMF\n");fclose(output);}
 
-// II.3.1 Déréférencement
+// II.3.1 Dï¿½rï¿½fï¿½rencement
 
 | STAR exp %prec UNA          {}
 
-// II.3.2. Booléens
+// II.3.2. Boolï¿½ens
 
 | NOT exp %prec UNA           {}
 | exp INF exp                 {}

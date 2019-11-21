@@ -44,9 +44,10 @@ extern int yydebug;
 
 #include "Table_des_symboles.h"
 #include "Attribute.h"
+
  
 
-#line 50 "y.tab.h" /* yacc.c:1909  */
+#line 51 "y.tab.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -126,11 +127,11 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 37 "lang.y" /* yacc.c:1909  */
+#line 21 "lang.y" /* yacc.c:1909  */
  
-	attribute val;
+    attribute val;
 
-#line 134 "y.tab.h" /* yacc.c:1909  */
+#line 135 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
