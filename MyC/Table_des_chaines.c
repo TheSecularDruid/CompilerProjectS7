@@ -67,3 +67,23 @@ int sid_valid(sid i) {
 	return 0;
 }
 
+#include<stdio.h>
+
+void print_sid_table() {
+  elem* tracker=storage;
+  printf("Content of the chain table :\n");
+  while(tracker!=NULL) {
+    printf("%s\n",tracker->value);
+    tracker=tracker->next;
+  }
+  printf("End of chain table.\n");
+}
+
+
+//test main for the printer function
+/*int main() {
+  sid truc = string_to_sid("hello");
+  sid_valid(truc);
+  print_sid_table();
+}
+*/

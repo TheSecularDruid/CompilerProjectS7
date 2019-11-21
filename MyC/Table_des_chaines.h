@@ -29,5 +29,7 @@ char * sid_to_string(sid i);
 /* check validity of an sid as being present in the strorage structure */
 int sid_valid(sid i);
 
+/*debugging function, prints the table*/
+void print_sid_table();
 #endif
 
