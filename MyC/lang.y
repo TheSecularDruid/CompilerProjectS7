@@ -171,30 +171,23 @@ AO block AF                 {}
 // II.1 Affectations
 
 aff : ID EQ exp               {
-                              $$->name = $1->name; 
+                              FILE * output_c = fopen("test.c", "a+");
                               $$->type_val = get_symbol_value($1->name)->type_val; 
 
                               if ($1->type_val != $3->type_val){
                                   printf("ERREUR de type dans l'affectation\n"); 
                                   exit(-1); 
                               }
-                              if ($$->type_val == 0){
-                                $$->int_val = $3->int_val; set_symbol_value($1->name, $3); 
-                                $$->reg_number = get_int_register_nb();
-                                FILE * output_c = fopen("test.c", "a+");
-                                fprintf(output_c, "\nri%d = %d\n", $$->reg_number, $$->int_val);
-                                fclose(output_c); 
-                              }else if ($1->type_val == 1){
-                                $$->float_val = $3->float_val; set_symbol_value($1->name, $3); 
-                                $$->reg_number = get_float_register_nb();
-                                FILE * output_c = fopen("test.c", "a+");
-                                fprintf(output_c, "\nri%d = %f\n", $$->reg_number, $$->float_val);
-                                fclose(output_c); 
+                              if ($$->type_val == INT){
+				  fprintf(output_c, "%s = ri%d;\n", $1->name, $3->reg_number);
+                              }else if ($1->type_val == FLOAT){
+                                fprintf(output_c, "%s = rf%d;\n", $1->name, $3->reg_number);
                               }else{
                                   perror("Type inconnu\n");
                               }
                               
                               printf("Affectation\n"); 
+			      fclose(output_c);
                               }
 | exp STAR EQ exp
 ;
@@ -238,18 +231,27 @@ exp
 : MOINS exp %prec UNA         {FILE* output = fopen("test.c", "a+"); if($2->type_val==FLOAT) fprintf(output,"rf%d = -rf%d;\n", get_float_register_nb(),$2->reg_number);
                                if($2->type_val==INT) fprintf(output,"ri%d = -ri%d;\n", get_int_register_nb(),$2->reg_number);
 			       fclose(output);}
-| exp PLUS exp                {printexp('+',$1,$3);}
-| exp MOINS exp               {printexp('-',$1,$3);}
-| exp STAR exp                {printexp('*',$1,$3);}
-| exp DIV exp                 {printexp('/',$1,$3);}
+| exp PLUS exp                {$$=printexp('+',$1,$3);}
+| exp MOINS exp               {$$=printexp('-',$1,$3);}
+| exp STAR exp                {$$=printexp('*',$1,$3);}
+| exp DIV exp                 {$$=printexp('/',$1,$3);}
 | PO exp PF                   {$$=$2;}
-| ID                          {$$ = get_symbol_value($1->name);}
-| NUMI                        {FILE* output = fopen("test.c","a+"); $$->type_val = INT; 
-                              $$->int_val = $1->int_val; 
-                              $$->reg_number = get_int_register_nb(); printf("NUMI\n"); fclose(output);  
-                              }
-| NUMF                        {FILE* output = fopen("test.c","a+"); $$->type_val = FLOAT; $$->float_val = $1->float_val; 
-                              $$->reg_number = get_float_register_nb(); printf("NUMF\n");fclose(output);}
+| ID                          {FILE* output=fopen("test.c","a+");
+                               $$ = get_symbol_value($1->name);
+			       int ret_reg_nb;
+			       if($$->type_val==FLOAT) {
+				   ret_reg_nb = get_float_register_nb();
+				   fprintf(output,"rf%d = %s;\n", ret_reg_nb, $$->name);}
+			       if($$->type_val==INT) {
+				   ret_reg_nb = get_int_register_nb();
+				   fprintf(output,"ri%d = %s;\n", ret_reg_nb, $$->name);}
+			       $$->reg_number=ret_reg_nb;
+			       fclose(output);}
+| NUMI                        {FILE* output=fopen("test.c","a+");
+                               $$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); printf("NUMI\n");
+                               fprintf(output,"ri%d = %d;\n",$$->reg_number,$$->int_val);fclose(output);}
+| NUMF                        {FILE* output=fopen("test.c","a+"); $$->type_val=FLOAT; $$->int_val = $1->float_val; $$->reg_number=get_float_register_nb(); printf("NUMF\n");
+                               fprintf(output,"rf%d = %d;\n",$$->reg_number,$$->float_val);fclose(output);}
 
 // II.3.1 Déréférencement
 
@@ -289,6 +291,5 @@ arglist : exp VIR arglist     {}
 
 %% 
 int main () {
-printf ("? "); return yyparse ();
-} 
-
+    printf ("? "); return yyparse ();
+}
