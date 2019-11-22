@@ -112,7 +112,6 @@ did : ID                       {
 				set_symbol_value(string_to_sid($1->name), $$);
                                 FILE * output_h = fopen("test.h", "a+");
                                 fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
-				//  fprintf(output_h, "\n%s r%d\n;", enumPrint($$->type_val), $$->reg_number);   Cette ligne devrait plus être utile vu qu'on déclare tous les registres à la fin maintenant (cf prog:block)     NOTE : pour l'instant ça marche pas vu qu'on interromps comme des bourrins
                                 fclose(output_h); 
             
                                 printf("ID\n");
@@ -175,16 +174,24 @@ aff : ID EQ exp               {
 			      set_symbol_value(string_to_sid($1->name),x);
 			      
 
-                              if ($1->type_val != $3->type_val){
-                                  printf("ERREUR de type dans l'affectation\n"); 
-                                  exit(-1); 
-                              }
-                              if ($$->type_val == INT){
+                              if ($1->type_val == INT && $3->type_val==FLOAT){
+                                  printf("WARNING : implicit cast of FLOAT exp in INT variable\n"); 
+				  int cast_int_register = get_int_register_nb();
+				  fprintf(output_c, "ri%d = (int) rf%d;\n",cast_int_register,$3->reg_number); 
+				  fprintf(output_c, "%s = ri%d;\n", $1->name, cast_int_register);
+			      }  else if ($1->type_val == FLOAT && $3->type_val==INT){
+				  int cast_float_register = get_float_register_nb();
+				  fprintf(output_c, "rf%d = (float) ri%d;\n", cast_float_register, $3->reg_number);
+				  fprintf(output_c, "%s = rf%d;\n", $1->name, cast_float_register);
+			      } else if ($1->type_val==INT &&$3->type_val == INT) {
 				  fprintf(output_c, "%s = ri%d;\n", $1->name, $3->reg_number);
-                              }else if ($1->type_val == FLOAT){
+                              } else if ($1->type_val == FLOAT){
                                 fprintf(output_c, "%s = rf%d;\n", $1->name, $3->reg_number);
-                              }else{
-                                  perror("Type inconnu\n");
+                              } else{
+                                  printf("Type error during affectation of variable %s\n", $1->name);
+				  printf("%s",enumPrint($1->type_val));
+				  printf("%s\n",enumPrint($3->type_val));
+				  exit(-1);
                               }
                               
                               printf("Affectation\n"); 
@@ -240,7 +247,7 @@ exp
 | ID                          {$$ = get_symbol_value(string_to_sid($1->name));
     
                                //Test pour savoir si la variable a déjà été affectée
-                               if($$->reg_number) {			       
+                               if($$->reg_number) {
 				   FILE* output=fopen("test.c","a+");
 				   int ret_reg_nb;
 				   if($$->type_val==FLOAT) {
@@ -252,14 +259,14 @@ exp
 				   $$->reg_number=ret_reg_nb;
 				   fclose(output);}
 			       else {
-				   printf("Error : variable %s not used with no prior affectation\n", $1->name);
+				   printf("Error : variable %s used with no prior affectation\n", $1->name);
 			       }
   }
 | NUMI                        {FILE* output=fopen("test.c","a+");
                                $$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); printf("NUMI\n");
                                fprintf(output,"ri%d = %d;\n",$$->reg_number,$$->int_val);fclose(output);}
 | NUMF                        {FILE* output=fopen("test.c","a+"); $$->type_val=FLOAT; $$->int_val = $1->float_val; $$->reg_number=get_float_register_nb(); printf("NUMF\n");
-                               fprintf(output,"rf%d = %d;\n",$$->reg_number,$$->float_val);fclose(output);}
+                               fprintf(output,"rf%d = %f;\n",$$->reg_number,$$->float_val);fclose(output);}
 
 // II.3.1 Déréférencement
 
