@@ -107,14 +107,9 @@ vlist: did vir vlist            {}
 
 did : ID                       {
                                 $$ =  new_attribute(); 
-                                $$->name = $1->name; $$->type_val = $<val>0->type_val; 
-                                if ($$->type_val == 0){
-                                    $$->reg_number = get_int_register_nb();
-                                    set_symbol_value(string_to_sid($1->name), $$);
-                                }else{
-                                    $$->reg_number = get_float_register_nb();
-                                    set_symbol_value(string_to_sid($1->name), $$);
-                                }
+                                $$->name = $1->name; $$->type_val = $<val>0->type_val;
+				$$->reg_number = 0; //On set la valeur reg_number à FALSE à la déclaration, puis à TRUE à l'affectation. De cette manière on peut détécter l'utilisation d'une variable non affectée et renvoyer une erreur le cas échéant
+				set_symbol_value(string_to_sid($1->name), $$);
                                 FILE * output_h = fopen("test.h", "a+");
                                 fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
 				//  fprintf(output_h, "\n%s r%d\n;", enumPrint($$->type_val), $$->reg_number);   Cette ligne devrait plus être utile vu qu'on déclare tous les registres à la fin maintenant (cf prog:block)     NOTE : pour l'instant ça marche pas vu qu'on interromps comme des bourrins
@@ -172,7 +167,13 @@ AO block AF                 {}
 
 aff : ID EQ exp               {
                               FILE * output_c = fopen("test.c", "a+");
-                              $$->type_val = get_symbol_value($1->name)->type_val; 
+                              $$->type_val = get_symbol_value(string_to_sid($1->name))->type_val; 
+			      
+			      //on marque la variable comme "initialisée"
+			      attribute x = get_symbol_value(string_to_sid($1->name));
+			      x->reg_number = 1;
+			      set_symbol_value(string_to_sid($1->name),x);
+			      
 
                               if ($1->type_val != $3->type_val){
                                   printf("ERREUR de type dans l'affectation\n"); 
@@ -236,17 +237,24 @@ exp
 | exp STAR exp                {$$=printexp('*',$1,$3);}
 | exp DIV exp                 {$$=printexp('/',$1,$3);}
 | PO exp PF                   {$$=$2;}
-| ID                          {FILE* output=fopen("test.c","a+");
-                               $$ = get_symbol_value($1->name);
-			       int ret_reg_nb;
-			       if($$->type_val==FLOAT) {
-				   ret_reg_nb = get_float_register_nb();
-				   fprintf(output,"rf%d = %s;\n", ret_reg_nb, $$->name);}
-			       if($$->type_val==INT) {
-				   ret_reg_nb = get_int_register_nb();
-				   fprintf(output,"ri%d = %s;\n", ret_reg_nb, $$->name);}
-			       $$->reg_number=ret_reg_nb;
-			       fclose(output);}
+| ID                          {$$ = get_symbol_value(string_to_sid($1->name));
+    
+                               //Test pour savoir si la variable a déjà été affectée
+                               if($$->reg_number) {			       
+				   FILE* output=fopen("test.c","a+");
+				   int ret_reg_nb;
+				   if($$->type_val==FLOAT) {
+				       ret_reg_nb = get_float_register_nb();
+				       fprintf(output,"rf%d = %s;\n", ret_reg_nb, $$->name);}
+				   if($$->type_val==INT) {
+				       ret_reg_nb = get_int_register_nb();
+				       fprintf(output,"ri%d = %s;\n", ret_reg_nb, $$->name);}
+				   $$->reg_number=ret_reg_nb;
+				   fclose(output);}
+			       else {
+				   printf("Error : variable %s not used with no prior affectation\n", $1->name);
+			       }
+  }
 | NUMI                        {FILE* output=fopen("test.c","a+");
                                $$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); printf("NUMI\n");
                                fprintf(output,"ri%d = %d;\n",$$->reg_number,$$->int_val);fclose(output);}
