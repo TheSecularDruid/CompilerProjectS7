@@ -46,7 +46,14 @@ void yyerror (char* s) {
 
 %%
 
-prog : block                   {printf("DEBUT\n");}
+prog : block                   {FILE* output_h = fopen("test.h","a+");
+                                int i;
+                                for(i=0;i++;i<get_int_register_nb()) 
+				    fprintf(output_h, "int ri%d;\n", i);
+				for(i=0;i++;i<get_float_register_nb())
+				    fprintf(output_h, "float rf%d;\n");
+				fclose(output_h);
+ }
 ;
 
 block:
@@ -110,7 +117,7 @@ did : ID                       {
                                 }
                                 FILE * output_h = fopen("test.h", "a+");
                                 fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
-                                fprintf(output_h, "\n%s r%d\n;", enumPrint($$->type_val), $$->reg_number);
+				//  fprintf(output_h, "\n%s r%d\n;", enumPrint($$->type_val), $$->reg_number);   Cette ligne devrait plus être utile vu qu'on déclare tous les registres à la fin maintenant (cf prog:block)     NOTE : pour l'instant ça marche pas vu qu'on interromps comme des bourrins
                                 fclose(output_h); 
             
                                 printf("ID\n");
@@ -228,14 +235,14 @@ while : WHILE                 {}
 // II.3 Expressions
 exp
 // II.3.0 Exp. arithmetiques
-: MOINS exp %prec UNA         {FILE* output = fopen("test.c", "a+"); if($2->type_val==FLOAT) fprintf(output,"rf%d=-rf%d;\n", get_float_register_nb(),$2->reg_number);
-                               if($2->type_val==INT) fprintf(output,"ri%d=-ri%d;\n", get_int_register_nb(),$2->reg_number);
+: MOINS exp %prec UNA         {FILE* output = fopen("test.c", "a+"); if($2->type_val==FLOAT) fprintf(output,"rf%d = -rf%d;\n", get_float_register_nb(),$2->reg_number);
+                               if($2->type_val==INT) fprintf(output,"ri%d = -ri%d;\n", get_int_register_nb(),$2->reg_number);
 			       fclose(output);}
 | exp PLUS exp                {printexp('+',$1,$3);}
 | exp MOINS exp               {printexp('-',$1,$3);}
 | exp STAR exp                {printexp('*',$1,$3);}
-| exp DIV exp                 {printexp('/',$3,$3);}
-| PO exp PF                   {}
+| exp DIV exp                 {printexp('/',$1,$3);}
+| PO exp PF                   {$$=$2;}
 | ID                          {$$ = get_symbol_value($1->name);}
 | NUMI                        {FILE* output = fopen("test.c","a+"); $$->type_val = INT; 
                               $$->int_val = $1->int_val; 
@@ -244,11 +251,11 @@ exp
 | NUMF                        {FILE* output = fopen("test.c","a+"); $$->type_val = FLOAT; $$->float_val = $1->float_val; 
                               $$->reg_number = get_float_register_nb(); printf("NUMF\n");fclose(output);}
 
-// II.3.1 Dï¿½rï¿½fï¿½rencement
+// II.3.1 Déréférencement
 
 | STAR exp %prec UNA          {}
 
-// II.3.2. Boolï¿½ens
+// II.3.2. Booléens
 
 | NOT exp %prec UNA           {}
 | exp INF exp                 {}
@@ -283,6 +290,5 @@ arglist : exp VIR arglist     {}
 %% 
 int main () {
 printf ("? "); return yyparse ();
-
 } 
 
