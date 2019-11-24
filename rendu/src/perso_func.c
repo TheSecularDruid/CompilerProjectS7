@@ -28,28 +28,26 @@ char * enumPrint(int t){
 }
  
 attribute printexp(char* op, attribute g, attribute d) {
-    FILE* output = fopen("test.c", "a+");
     attribute ret = new_attribute();
     ret->type_val = FLOAT;
     int f = -1;
     if(g->type_val==FLOAT&&d->type_val==FLOAT) {
 	f = get_float_register_nb();
-	fprintf(output,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, d->reg_number);}
+	fprintf(STDOUT,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, d->reg_number);}
     if(g->type_val==FLOAT&&d->type_val==INT) {
 	f = get_float_register_nb();
 	int cast_reg_nb = get_float_register_nb();
-	fprintf(output, "rf%d = (float) ri%d;\n", cast_reg_nb, d->reg_number);   //explicitation du cast
-	fprintf(output,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, cast_reg_nb);}
+	fprintf(STDOUT, "rf%d = (float) ri%d;\n", cast_reg_nb, d->reg_number);   //explicitation du cast
+	fprintf(STDOUT,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, cast_reg_nb);}
     if(g->type_val==INT&&d->type_val==FLOAT){
 	f = get_float_register_nb();
 	int cast_reg_nb = get_float_register_nb();
-	fprintf(output,"rf%d = (float) ri%d;\n", cast_reg_nb, g->reg_number);
-	fprintf(output,"rf%d = rf%d %s rf%d;\n", f, cast_reg_nb,op, d->reg_number);}
+	fprintf(STDOUT,"rf%d = (float) ri%d;\n", cast_reg_nb, g->reg_number);
+	fprintf(STDOUT,"rf%d = rf%d %s rf%d;\n", f, cast_reg_nb,op, d->reg_number);}
     if(g->type_val==INT&&d->type_val==INT) {
 	f = get_int_register_nb();
-	fprintf(output,"ri%d = ri%d %s ri%d;\n", f, g->reg_number, op, d->reg_number);
+	fprintf(STDOUT,"ri%d = ri%d %s ri%d;\n", f, g->reg_number, op, d->reg_number);
 	ret->type_val = INT;}
-    fclose(output);
     ret->reg_number = f;
     return ret;
 }
