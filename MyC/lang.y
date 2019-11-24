@@ -31,7 +31,7 @@ void yyerror (char* s) {
 %token <val> AND OR NOT DIFF EQUAL SUP INF
 %token PLUS MOINS STAR DIV
 %token DOT ARR
-%type <val> decl var_decl type typename aff exp vlist did vir
+%type <val> decl var_decl type typename aff exp vlist did vir if else cond bool_cond stat block inst
 %left DIFF EQUAL SUP INF       // low priority on comparison
 %left PLUS MOINS               // higher priority on + - 
 %left STAR DIV                 // higher priority on * /
@@ -108,7 +108,7 @@ vlist: did vir vlist            {}
 did : ID                       {
                                 $$ =  new_attribute(); 
                                 $$->name = $1->name; $$->type_val = $<val>0->type_val;
-				$$->reg_number = 0; //On set la valeur reg_number à FALSE à la déclaration, puis à TRUE à l'affectation. De cette manière on peut détécter l'utilisation d'une variable non affectée et renvoyer une erreur le cas échéant
+				$$->reg_number = 0; //On set la valeur reg_number ï¿½ FALSE ï¿½ la dï¿½claration, puis ï¿½ TRUE ï¿½ l'affectation. De cette maniï¿½re on peut dï¿½tï¿½cter l'utilisation d'une variable non affectï¿½e et renvoyer une erreur le cas ï¿½chï¿½ant
 				set_symbol_value(string_to_sid($1->name), $$);
                                 FILE * output_h = fopen("test.h", "a+");
                                 fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
@@ -167,35 +167,39 @@ AO block AF                 {}
 aff : ID EQ exp               {
                               FILE * output_c = fopen("test.c", "a+");
                               $$->type_val = get_symbol_value(string_to_sid($1->name))->type_val; 
+                              $$->label_nb = $<val>0->label_nb; 
+                              printf(" ICIIII : L%d\n", $$->label_nb); 
 			      
-			      //on marque la variable comme "initialisée"
-			      attribute x = get_symbol_value(string_to_sid($1->name));
-			      x->reg_number = 1;
-			      set_symbol_value(string_to_sid($1->name),x);
+                            //on marque la variable comme "initialisï¿½e"
+                            attribute x = get_symbol_value(string_to_sid($1->name));
+                            x->reg_number = 1;
+                            set_symbol_value(string_to_sid($1->name),x);
 			      
 
-                              if ($1->type_val == INT && $3->type_val==FLOAT){
-                                  printf("WARNING : implicit cast of FLOAT exp in INT variable\n"); 
-				  int cast_int_register = get_int_register_nb();
-				  fprintf(output_c, "ri%d = (int) rf%d;\n",cast_int_register,$3->reg_number); 
-				  fprintf(output_c, "%s = ri%d;\n", $1->name, cast_int_register);
-			      }  else if ($1->type_val == FLOAT && $3->type_val==INT){
-				  int cast_float_register = get_float_register_nb();
-				  fprintf(output_c, "rf%d = (float) ri%d;\n", cast_float_register, $3->reg_number);
-				  fprintf(output_c, "%s = rf%d;\n", $1->name, cast_float_register);
-			      } else if ($1->type_val==INT &&$3->type_val == INT) {
-				  fprintf(output_c, "%s = ri%d;\n", $1->name, $3->reg_number);
+                            if ($1->type_val == INT && $3->type_val==FLOAT){ //Membres de l'aff de types diffÃ©rents
+                                printf("WARNING : implicit cast of FLOAT exp in INT variable\n"); 
+                                int cast_int_register = get_int_register_nb();
+                                fprintf(output_c, "ri%d = (int) rf%d;\n",cast_int_register,$3->reg_number); 
+                                fprintf(output_c, "%s = ri%d;\n", $1->name, cast_int_register);
+
+			                }  else if ($1->type_val == FLOAT && $3->type_val==INT){ //Membres de l'aff de types diffÃ©rents
+                            int cast_float_register = get_float_register_nb();
+                            fprintf(output_c, "rf%d = (float) ri%d;\n", cast_float_register, $3->reg_number);
+                            fprintf(output_c, "%s = rf%d;\n", $1->name, cast_float_register);
+
+			                } else if ($1->type_val==INT && $3->type_val == INT) { //Les deux membres de l'aff sont de memes types
+				              fprintf(output_c, "L%d %s = ri%d;\n", $<val>0->label_nb, $1->name, $3->reg_number);
                               } else if ($1->type_val == FLOAT){
                                 fprintf(output_c, "%s = rf%d;\n", $1->name, $3->reg_number);
                               } else{
-                                  printf("Type error during affectation of variable %s\n", $1->name);
-				  printf("%s",enumPrint($1->type_val));
-				  printf("%s\n",enumPrint($3->type_val));
-				  exit(-1);
+                                printf("Type error during affectation of variable %s\n", $1->name);
+                                printf("%s",enumPrint($1->type_val));
+                                printf("%s\n",enumPrint($3->type_val));
+                                exit(-1);
                               }
                               
                               printf("Affectation\n"); 
-			      fclose(output_c);
+			                  fclose(output_c);
                               }
 | exp STAR EQ exp
 ;
@@ -208,20 +212,28 @@ ret : RETURN exp              {}
 
 // II.3. Conditionelles
 cond :
-if bool_cond inst             {}
-|  else inst                  {}
+if bool_cond stat else stat   { }
+|  if bool_cond stat          { $$->label_nb = $1->label_nb;  }
+;
+
+stat:
+AO block AF                   {}
+; 
+
+bool_cond : PO exp PF         {$$->label_nb = $<val>0->label_nb; }
 ;
 
 
-bool_cond : PO exp PF         {}
+
+if : IF                       { $$ = new_attribute(); $$->label_nb = get_label_nb();  printf(" if (L%d)\n", $$->label_nb); }
 ;
 
-if : IF                       {}
-;
 
 else : ELSE                   {}
 ;
 
+
+;
 // II.4. Iterations
 
 loop : while while_cond inst  {}
@@ -246,7 +258,7 @@ exp
 | PO exp PF                   {$$=$2;}
 | ID                          {$$ = get_symbol_value(string_to_sid($1->name));
     
-                               //Test pour savoir si la variable a déjà été affectée
+                               //Test pour savoir si la variable a dï¿½jï¿½ ï¿½tï¿½ affectï¿½e
                                if($$->reg_number) {
 				   FILE* output=fopen("test.c","a+");
 				   int ret_reg_nb;
@@ -268,16 +280,16 @@ exp
 | NUMF                        {FILE* output=fopen("test.c","a+"); $$->type_val=FLOAT; $$->int_val = $1->float_val; $$->reg_number=get_float_register_nb(); printf("NUMF\n");
                                fprintf(output,"rf%d = %f;\n",$$->reg_number,$$->float_val);fclose(output);}
 
-// II.3.1 Déréférencement
+// II.3.1 Dï¿½rï¿½fï¿½rencement
 
 | STAR exp %prec UNA          {}
 
-// II.3.2. Booléens
+// II.3.2. Boolï¿½ens
 
 | NOT exp %prec UNA           {}
 | exp INF exp                 {}
 | exp SUP exp                 {}
-| exp EQUAL exp               {}
+| exp EQUAL exp               { printf(" %s == %s goto L%d \n", $1->name, $3->name, $<val>0->label_nb); }
 | exp DIFF exp                {}
 | exp AND exp                 {}
 | exp OR exp                  {}

@@ -2,16 +2,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Incrémente les registres entiers
 int int_reg_nb = 0;
 int get_int_register_nb() {
     return(int_reg_nb++);
 }
  
+//Incrémente les registres pour float
 int float_reg_nb = 0;
 int get_float_register_nb() {
     return(float_reg_nb++);
 } 
- 
+
+//Incrémente les lebels
+int label_nb = 0;
+int get_label_nb() {
+    return(label_nb++);
+} 
+
+
 char * enumPrint(int t){
     if (t == 0) return "int" ;
     if (t == 1) return "float" ;

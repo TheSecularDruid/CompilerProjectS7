@@ -19,7 +19,7 @@ struct ATTRIBUTE {
   float float_val;
   type type_val;
   int reg_number;
-  
+  int label_nb; 
   /* other attribute's fields can goes here */ 
 
 };
