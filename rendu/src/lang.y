@@ -46,13 +46,12 @@ void yyerror (char* s) {
 
 %%
 
-prog : block                   {FILE* output_h = fopen(STDERR,"a+");
+prog : block                   {
                                 int i;
                                 for(i=0;i++;i<get_int_register_nb()) 
-				    fprintf(output_h, "int ri%d;\n", i);
+				    fprintf(STDERR, "int ri%d;\n", i);
 				for(i=0;i++;i<get_float_register_nb())
-				    fprintf(output_h, "float rf%d;\n");
-				fclose(output_h);
+				    fprintf(STDERR, "float rf%d;\n");
  }
 ;
 
@@ -72,7 +71,7 @@ decl: var_decl PV              {}
 ;
 
 // I.1. Variables
-var_decl : type vlist          {$$->type_val = $1->type_val; printf("type vlist\n");}
+var_decl : type vlist          {$$->type_val = $1->type_val;}
 ;
 
 // I.2. Structures
@@ -110,16 +109,13 @@ did : ID                       {
                                 $$->name = $1->name; $$->type_val = $<val>0->type_val;
 				$$->reg_number = 0; //On set la valeur reg_number � FALSE � la d�claration, puis � TRUE � l'affectation. De cette mani�re on peut d�t�cter l'utilisation d'une variable non affect�e et renvoyer une erreur le cas �ch�ant
 				set_symbol_value(string_to_sid($1->name), $$);
-                                FILE * output_h = fopen(STDERR, "a+");
-                                fprintf(output_h, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
-                                fclose(output_h); 
-            
-                                printf("ID\n");
+                                fprintf(STDERR, "\n%s %s;\n", enumPrint($$->type_val), $$->name);
+           
 
                                 }
 ;
 
-vir : VIR                      {$$->type_val = $<val>-1->type_val;  printf("VIR\n");}
+vir : VIR                      {$$->type_val = $<val>-1->type_val;}
 ;
 
 fun_body : AO block AF         {}
@@ -128,13 +124,13 @@ fun_body : AO block AF         {}
 // I.4. Types
 type
 : typename pointer             {}
-| typename                     {$$->type_val = $1->type_val; printf("typename\n ");}
+| typename                     {$$->type_val = $1->type_val;}
 ;
 
 typename
-: TINT                          {$$ = new_attribute(); $$->type_val = INT; printf("TINT\n");
+: TINT                          {$$ = new_attribute(); $$->type_val = INT;);
                                 }
-| TFLOAT                        {$$ = new_attribute(); $$->type_val = FLOAT; printf("TFLOAT\n");}
+| TFLOAT                        {$$ = new_attribute(); $$->type_val = FLOAT;}
 | VOID                          {}
 | STRUCT ID                     {}
 ;
@@ -165,7 +161,6 @@ AO block AF                 {}
 // II.1 Affectations
 
 aff : ID EQ exp               {
-                              FILE * output_c = fopen(STDOUT, "a+");
                               $$->type_val = get_symbol_value(string_to_sid($1->name))->type_val; 
                               $$->label_nb = $<val>0->label_nb; 
                               printf(" ICIIII : L%d\n", $$->label_nb); 
@@ -179,18 +174,18 @@ aff : ID EQ exp               {
                             if ($1->type_val == INT && $3->type_val==FLOAT){ //Membres de l'aff de types différents
                                 printf("WARNING : implicit cast of FLOAT exp in INT variable\n"); 
                                 int cast_int_register = get_int_register_nb();
-                                fprintf(output_c, "ri%d = (int) rf%d;\n",cast_int_register,$3->reg_number); 
-                                fprintf(output_c, "%s = ri%d;\n", $1->name, cast_int_register);
+                                fprintf(STDOUT, "ri%d = (int) rf%d;\n",cast_int_register,$3->reg_number); 
+                                fprintf(STDOUT, "%s = ri%d;\n", $1->name, cast_int_register);
 
 			                }  else if ($1->type_val == FLOAT && $3->type_val==INT){ //Membres de l'aff de types différents
                             int cast_float_register = get_float_register_nb();
-                            fprintf(output_c, "rf%d = (float) ri%d;\n", cast_float_register, $3->reg_number);
-                            fprintf(output_c, "%s = rf%d;\n", $1->name, cast_float_register);
+                            fprintf(STDOUT, "rf%d = (float) ri%d;\n", cast_float_register, $3->reg_number);
+                            fprintf(STDOUT, "%s = rf%d;\n", $1->name, cast_float_register);
 
 			                } else if ($1->type_val==INT && $3->type_val == INT) { //Les deux membres de l'aff sont de memes types
-				              fprintf(output_c, "L%d %s = ri%d;\n", $<val>0->label_nb, $1->name, $3->reg_number);
+				              fprintf(STDOUT, "L%d %s = ri%d;\n", $<val>0->label_nb, $1->name, $3->reg_number);
                               } else if ($1->type_val == FLOAT){
-                                fprintf(output_c, "%s = rf%d;\n", $1->name, $3->reg_number);
+                                fprintf(STDOUT, "%s = rf%d;\n", $1->name, $3->reg_number);
                               } else{
                                 printf("Type error during affectation of variable %s\n", $1->name);
                                 printf("%s",enumPrint($1->type_val));
@@ -199,7 +194,6 @@ aff : ID EQ exp               {
                               }
                               
                               printf("Affectation\n"); 
-			                  fclose(output_c);
                               }
 | exp STAR EQ exp
 ;
@@ -248,10 +242,9 @@ while : WHILE                 {}
 // II.3 Expressions
 exp
 // II.3.0 Exp. arithmetiques
-: MOINS exp %prec UNA         {FILE* output = fopen(STDOUT, "a+");
-                               if($2->type_val==FLOAT) fprintf(output,"rf%d = -rf%d;\n", $2->reg_number,$2->reg_number);
-			       if($2->type_val==INT) fprintf(output,"ri%d = -ri%d;\n", $2->reg_number,$2->reg_number);
-			       fclose(output);
+: MOINS exp %prec UNA         {
+                               if($2->type_val==FLOAT) fprintf(STDOUT,"rf%d = -rf%d;\n", $2->reg_number,$2->reg_number);
+			       if($2->type_val==INT) fprintf(STDOUT,"ri%d = -ri%d;\n", $2->reg_number,$2->reg_number);
                                $$->reg_number = $2->reg_number;}
 | exp PLUS exp                {$$=printexp("+",$1,$3);}
 | exp MOINS exp               {$$=printexp("-",$1,$3);}
@@ -262,25 +255,25 @@ exp
     
                                //Test pour savoir si la variable a d�j� �t� affect�e
                                if($$->reg_number) {
-				   FILE* output=fopen(STDOUT,"a+");
+			
 				   int ret_reg_nb;
 				   if($$->type_val==FLOAT) {
 				       ret_reg_nb = get_float_register_nb();
-				       fprintf(output,"rf%d = %s;\n", ret_reg_nb, $$->name);}
+				       fprintf(STDOUT,"rf%d = %s;\n", ret_reg_nb, $$->name);}
 				   if($$->type_val==INT) {
 				       ret_reg_nb = get_int_register_nb();
-				       fprintf(output,"ri%d = %s;\n", ret_reg_nb, $$->name);}
+				       fprintf(STDOUT,"ri%d = %s;\n", ret_reg_nb, $$->name);}
 				   $$->reg_number=ret_reg_nb;
-				   fclose(output);}
+				 }
 			       else {
-				   printf("Error : variable %s used with no prior affectation\n", $1->name);
+				 FILE* err = fopen("error_log.txt","a+");fprintf(err,"Error : variable %s used with no prior affectation\n", $1->name);fclose(err);exit(-1);
 			       }
   }
-| NUMI                        {FILE* output=fopen(STDOUT,"a+");
-                               $$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); printf("NUMI\n");
-                               fprintf(output,"ri%d = %d;\n",$$->reg_number,$$->int_val);fclose(output);}
-| NUMF                        {FILE* output=fopen(STDOUT,"a+"); $$->type_val=FLOAT; $$->int_val = $1->float_val; $$->reg_number=get_float_register_nb(); printf("NUMF\n");
-                               fprintf(output,"rf%d = %f;\n",$$->reg_number,$$->float_val);fclose(output);}
+| NUMI                        {
+                               $$->type_val=INT; $$->int_val = $1->int_val; $$->reg_number=get_int_register_nb(); 
+                               fprintf(STDOUT,"ri%d = %d;\n",$$->reg_number,$$->int_val);}
+| NUMF                        {$$->type_val=FLOAT; $$->int_val = $1->float_val; $$->reg_number=get_float_register_nb(); 
+                               fprintf(STDOUT,"rf%d = %f;\n",$$->reg_number,$$->float_val);}
 
 // II.3.1 D�r�f�rencement
 
@@ -288,22 +281,24 @@ exp
 
 // II.3.2. Bool�ens
 
-| NOT exp %prec UNA           {FILE* output_c = fopen(STDOUT,"a+"); fprintf(output_c,"ri%d = !ri%d;\n",$2->reg_number,$2->reg_number);$$->reg_number=$2->reg_number;$$->type_val=INT;fclose(output_c);}
+| NOT exp %prec UNA           {fprintf(STDOUT,"ri%d = !ri%d;\n",$2->reg_number,$2->reg_number);$$->reg_number=$2->reg_number;$$->type_val=INT;}
 | exp INF exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
-	                          printf("Type error : boolean operation with non-int variable\n"); exit(-1);}
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation with non-int variable\n");fclose(err); exit(-1);}
                                $$=printexp("<",$1,$3);}
 | exp SUP exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
-	                          printf("Type error : boolean operation with non-int variable\n"); exit(-1);}
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation with non-int variable\n");fclose(err); exit(-1);}
                                $$=printexp(">",$1,$3);}
-| exp EQUAL exp               { printf(" %s == %s goto L%d \n", $1->name, $3->name, $<val>0->label_nb); }
+| exp EQUAL exp               {if($1->type_val!=INT||$3->type_val!=INT) {
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation with non-int variable\n");fclose(err); exit(-1); }
+  $$=printexp("==",$1,$3);}
 | exp DIFF exp                {if($1->type_val!=INT||$3->type_val!=INT) {
-	                          printf("Type error : boolean operation on non-int variable\n"); exit(-1);}
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n");fclose(err); exit(-1);}
                                $$=printexp("<>",$1,$3);}
 | exp AND exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
-	                          printf("Type error : boolean operation on non-int variable\n"); exit(-1);}
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n"); fcloser(err); exit(-1);}
                                $$=printexp("&&",$1,$3);}
 | exp OR exp                  {if($1->type_val!=INT||$3->type_val!=INT) {
-	                          printf("Type error : boolean operation on non-int variable\n"); exit(-1);}
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n"); fclose(err);exit(-1);}
                                $$=printexp("||",$1,$3);}
 
 // II.3.3. Structures
@@ -329,6 +324,6 @@ arglist : exp VIR arglist     {}
 
 
 %% 
-int main (int argc, char* argv[]) {
+int main () {
     printf ("? "); return yyparse ();
 }
