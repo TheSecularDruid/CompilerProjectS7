@@ -248,13 +248,15 @@ while : WHILE                 {}
 // II.3 Expressions
 exp
 // II.3.0 Exp. arithmetiques
-: MOINS exp %prec UNA         {FILE* output = fopen("test.c", "a+"); if($2->type_val==FLOAT) fprintf(output,"rf%d = -rf%d;\n", get_float_register_nb(),$2->reg_number);
-                               if($2->type_val==INT) fprintf(output,"ri%d = -ri%d;\n", get_int_register_nb(),$2->reg_number);
-			       fclose(output);}
-| exp PLUS exp                {$$=printexp('+',$1,$3);}
-| exp MOINS exp               {$$=printexp('-',$1,$3);}
-| exp STAR exp                {$$=printexp('*',$1,$3);}
-| exp DIV exp                 {$$=printexp('/',$1,$3);}
+: MOINS exp %prec UNA         {FILE* output = fopen("test.c", "a+");
+                               if($2->type_val==FLOAT) fprintf(output,"rf%d = -rf%d;\n", $2->reg_number,$2->reg_number);
+			       if($2->type_val==INT) fprintf(output,"ri%d = -ri%d;\n", $2->reg_number,$2->reg_number);
+			       fclose(output);
+                               $$->reg_number = $2->reg_number;}
+| exp PLUS exp                {$$=printexp("+",$1,$3);}
+| exp MOINS exp               {$$=printexp("-",$1,$3);}
+| exp STAR exp                {$$=printexp("*",$1,$3);}
+| exp DIV exp                 {$$=printexp("/",$1,$3);}
 | PO exp PF                   {$$=$2;}
 | ID                          {$$ = get_symbol_value(string_to_sid($1->name));
     
@@ -286,13 +288,23 @@ exp
 
 // II.3.2. Bool�ens
 
-| NOT exp %prec UNA           {}
-| exp INF exp                 {}
-| exp SUP exp                 {}
+| NOT exp %prec UNA           {FILE* output_c = fopen("test.c","a+"); fprintf(output_c,"ri%d = !ri%d;\n",$2->reg_number,$2->reg_number);$$->reg_number=$2->reg_number;$$->type_val=INT;fclose(output_c);}
+| exp INF exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
+	                          printf("Type error : boolean operation with non-int variable\n"); exit(-1);}
+                               $$=printexp("<",$1,$3);}
+| exp SUP exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
+	                          printf("Type error : boolean operation with non-int variable\n"); exit(-1);}
+                               $$=printexp(">",$1,$3);}
 | exp EQUAL exp               { printf(" %s == %s goto L%d \n", $1->name, $3->name, $<val>0->label_nb); }
-| exp DIFF exp                {}
-| exp AND exp                 {}
-| exp OR exp                  {}
+| exp DIFF exp                {if($1->type_val!=INT||$3->type_val!=INT) {
+	                          printf("Type error : boolean operation on non-int variable\n"); exit(-1);}
+                               $$=printexp("<>",$1,$3);}
+| exp AND exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
+	                          printf("Type error : boolean operation on non-int variable\n"); exit(-1);}
+                               $$=printexp("&&",$1,$3);}
+| exp OR exp                  {if($1->type_val!=INT||$3->type_val!=INT) {
+	                          printf("Type error : boolean operation on non-int variable\n"); exit(-1);}
+                               $$=printexp("||",$1,$3);}
 
 // II.3.3. Structures
 
