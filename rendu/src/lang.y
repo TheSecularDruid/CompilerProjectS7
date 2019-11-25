@@ -52,6 +52,7 @@ prog : block                   {
 				    fprintf(stderr, "int ri%d;\n", i);
 				for(i=0;i++;i<get_float_register_nb())
 				    fprintf(stderr, "float rf%d;\n");
+            fprintf(stdout, "}"); 
  }
 ;
 
@@ -162,8 +163,6 @@ AO block AF                 {}
 
 aff : ID EQ exp               {
                               $$->type_val = get_symbol_value(string_to_sid($1->name))->type_val; 
-                              $$->label_nb = $<val>0->label_nb; 
-                              printf(" ICIIII : L%d\n", $$->label_nb); 
 			      
                             //on marque la variable comme "initialis�e"
                             attribute x = get_symbol_value(string_to_sid($1->name));
@@ -183,7 +182,7 @@ aff : ID EQ exp               {
                             fprintf(stdout, "%s = rf%d;\n", $1->name, cast_float_register);
 
 			                } else if ($1->type_val==INT && $3->type_val == INT) { //Les deux membres de l'aff sont de memes types
-				              fprintf(stdout, "L%d %s = ri%d;\n", $<val>0->label_nb, $1->name, $3->reg_number);
+				              fprintf(stdout, "%s = ri%d;\n", $<val>0->label_nb, $1->name, $3->reg_number);
                               } else if ($1->type_val == FLOAT){
                                 fprintf(stdout, "%s = rf%d;\n", $1->name, $3->reg_number);
                               } else{
@@ -192,9 +191,7 @@ aff : ID EQ exp               {
                                 printf("%s\n",enumPrint($3->type_val));
                                 exit(-1);
                               }
-                              
-                              printf("Affectation\n"); 
-                              }
+                               }
 | exp STAR EQ exp
 ;
 
@@ -214,12 +211,12 @@ stat:
 AO block AF                   {}
 ; 
 
-bool_cond : PO exp PF         {$$->label_nb = $<val>0->label_nb; }
+bool_cond : PO exp PF         {}
 ;
 
 
 
-if : IF                       { $$ = new_attribute(); $$->label_nb = get_label_nb();  printf(" if (L%d)\n", $$->label_nb); }
+if : IF                       {}
 ;
 
 
@@ -325,5 +322,5 @@ arglist : exp VIR arglist     {}
 
 %% 
 int main () {
-    printf ("? "); return yyparse ();
+    fprintf(stdout, "int main() {"); return yyparse ();
 }
