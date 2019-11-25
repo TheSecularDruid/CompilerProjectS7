@@ -14,7 +14,7 @@ int get_float_register_nb() {
     return(float_reg_nb++);
 } 
 
-//Incrémente les lebels
+//Incrémente les labels
 int label_nb = 0;
 int get_label_nb() {
     return(label_nb++);
@@ -33,20 +33,20 @@ attribute printexp(char* op, attribute g, attribute d) {
     int f = -1;
     if(g->type_val==FLOAT&&d->type_val==FLOAT) {
 	f = get_float_register_nb();
-	fprintf(STDOUT,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, d->reg_number);}
+	fprintf(stdout,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, d->reg_number);}
     if(g->type_val==FLOAT&&d->type_val==INT) {
 	f = get_float_register_nb();
 	int cast_reg_nb = get_float_register_nb();
-	fprintf(STDOUT, "rf%d = (float) ri%d;\n", cast_reg_nb, d->reg_number);   //explicitation du cast
-	fprintf(STDOUT,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, cast_reg_nb);}
+	fprintf(stdout, "rf%d = (float) ri%d;\n", cast_reg_nb, d->reg_number);   //explicitation du cast
+	fprintf(stdout,"rf%d = rf%d %s rf%d;\n", f, g->reg_number, op, cast_reg_nb);}
     if(g->type_val==INT&&d->type_val==FLOAT){
 	f = get_float_register_nb();
 	int cast_reg_nb = get_float_register_nb();
-	fprintf(STDOUT,"rf%d = (float) ri%d;\n", cast_reg_nb, g->reg_number);
-	fprintf(STDOUT,"rf%d = rf%d %s rf%d;\n", f, cast_reg_nb,op, d->reg_number);}
+	fprintf(stdout,"rf%d = (float) ri%d;\n", cast_reg_nb, g->reg_number);
+	fprintf(stdout,"rf%d = rf%d %s rf%d;\n", f, cast_reg_nb,op, d->reg_number);}
     if(g->type_val==INT&&d->type_val==INT) {
 	f = get_int_register_nb();
-	fprintf(STDOUT,"ri%d = ri%d %s ri%d;\n", f, g->reg_number, op, d->reg_number);
+	fprintf(stdout,"ri%d = ri%d %s ri%d;\n", f, g->reg_number, op, d->reg_number);
 	ret->type_val = INT;}
     ret->reg_number = f;
     return ret;
