@@ -182,7 +182,7 @@ aff : ID EQ exp               {
                             fprintf(stdout, "%s = rf%d;\n", $1->name, cast_float_register);
 
 			                } else if ($1->type_val==INT && $3->type_val == INT) { //Les deux membres de l'aff sont de memes types
-				              fprintf(stdout, "%s = ri%d;\n", $<val>0->label_nb, $1->name, $3->reg_number);
+				                      fprintf(stdout, "%s = ri%d;\n", $1->name, $3->reg_number);
                               } else if ($1->type_val == FLOAT){
                                 fprintf(stdout, "%s = rf%d;\n", $1->name, $3->reg_number);
                               } else{
@@ -204,7 +204,7 @@ ret : RETURN exp              {}
 // II.3. Conditionelles
 cond :
 if bool_cond stat else stat   { }
-|  if bool_cond stat          { $$->label_nb = $1->label_nb;  }
+|  if bool_cond stat          {}
 ;
 
 stat:
