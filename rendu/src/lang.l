@@ -3,8 +3,8 @@
 
 %{ 
 #include "y.tab.h"
-#include "Table_des_symboles.h"
-#include "Attribute.h"
+#include "./src/Table_des_symboles.h"
+#include "./src/Attribute.h"
 #include <stdio.h>
 
 %} 

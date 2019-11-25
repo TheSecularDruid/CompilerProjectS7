@@ -1,15 +1,15 @@
 %code requires{
-#include "~/Documents/Compilation/compilation-projet-team27/rendu/src/Table_des_symboles.h"
-#include "Attribute.h"
-
+#include "../rendu/src/perso_func.h"
+#include "../rendu/src/Attribute.h"
+#include "./src/Table_des_symboles.h"
  }
 
 %{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>    
-#include "perso_func.h"
-  
+
+
 extern int yylex();
 extern int yyparse();
     
@@ -128,7 +128,7 @@ type
 ;
 
 typename
-: TINT                          {$$ = new_attribute(); $$->type_val = INT;);
+: TINT                          {$$ = new_attribute(); $$->type_val = INT;
                                 }
 | TFLOAT                        {$$ = new_attribute(); $$->type_val = FLOAT;}
 | VOID                          {}
@@ -295,7 +295,7 @@ exp
     FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n");fclose(err); exit(-1);}
                                $$=printexp("<>",$1,$3);}
 | exp AND exp                 {if($1->type_val!=INT||$3->type_val!=INT) {
-    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n"); fcloser(err); exit(-1);}
+    FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n"); fclose(err); exit(-1);}
                                $$=printexp("&&",$1,$3);}
 | exp OR exp                  {if($1->type_val!=INT||$3->type_val!=INT) {
     FILE* err = fopen("error_log.txt","a+");fprintf(err,"Type error : boolean operation on non-int variable\n"); fclose(err);exit(-1);}

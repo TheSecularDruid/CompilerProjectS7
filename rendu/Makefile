@@ -2,7 +2,7 @@ PATH_FILE = ./src/
 
 all		:	lang
 
-$(PATH_FILE)y.tab.h $(PATH_FILE)y.tab.c :	$(PATH_FILE)lang.y
+y.tab.h y.tab.c :	$(PATH_FILE)lang.y
 			bison -v -y  -d $(PATH_FILE)lang.y
 lex.yy.c	:	$(PATH_FILE)lang.l y.tab.h
 			flex $(PATH_FILE)lang.l 
