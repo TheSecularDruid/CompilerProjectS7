@@ -47,13 +47,17 @@ void yyerror (char* s) {
 %%
 
 prog : block                   {
-                                int i;
-                                for(i=0;i++;i<get_int_register_nb()) 
-				    fprintf(stderr, "int ri%d;\n", i);
-				for(i=0;i++;i<get_float_register_nb())
-				    fprintf(stderr, "float rf%d;\n");
-            fprintf(stdout, "}"); 
- }
+                                int i = 0; 
+                                int reg_int = get_int_register_nb(); 
+                                int reg_float = get_float_register_nb(); 
+                                for(i=0;i<reg_int; i++){
+				                          fprintf(stderr, "int ri%d;\n", i);
+                                }
+                                for(i=0; i<reg_float; i++){
+                                  fprintf(stderr, "float rf%d;\n", i);
+                                }
+                                fprintf(stdout, "}"); 
+                                }
 ;
 
 block:
